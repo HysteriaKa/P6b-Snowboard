@@ -8,7 +8,10 @@
 /var/
 /vendor/
 .env
+<<<<<<< HEAD
 .env.test
+=======
+>>>>>>> 72d0a6b66815ce95ba4e515f6441f9900b8cc10f
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
