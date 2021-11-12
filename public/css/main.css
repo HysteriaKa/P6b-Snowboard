@@ -1,5 +1,6 @@
 @import "~bootstrap/scss/bootstrap";
 h1 {
+
   text-transform: uppercase;
 }
 
@@ -129,46 +130,56 @@ nav div a {
 /*mobile navbar*/
 .mobile {
 
-	position:fixed;
-	bottom:0;
-	left:0;
-	right:0;
-	z-index:600;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 600;
 	will-change:transform;
 	transform: translateZ(0);
-	display:flex;	
-	height:50px;
+	display: flex;	
+	height: 50px;
 	box-shadow: 0 -2px 5px -2px #333;
-	background-color:#fff;
+	background-color: #fff;
 }
 .fa-home {
-  font-size:50px !important;
+
+  font-size: 50px !important;
 }
 .fa-sign-out-alt {
+
   font-size:50px !important;
   color: black;
 }
 /* margin et padding*/
 .mab-1 {
+
   margin-bottom: 1rem;
 }
 .mab-2 {
+
   margin-bottom: 2rem !important;
 }
 .mat-1 {
+
   margin-top: 1rem;
 }
 .mat-2 {
+
   margin-top: 2rem;
 }
 .mar-1 {
+
   margin-right: 1rem;
 }
 .mal-1 {
+
   margin-left: 1rem;
 }
+
 /* buttons*/
 .btn {
+
   cursor: pointer;
   padding: 10px;
   border: none;
@@ -177,6 +188,7 @@ nav div a {
 }
 
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+
   .row {
     flex-direction: column;
   }
@@ -185,6 +197,7 @@ nav div a {
   }
 }
 @media (min-width: 600px) and (max-width: 1024px) {
+
   .row {
     flex-direction: column;
   }
@@ -193,6 +206,7 @@ nav div a {
   }
 }
 @media (min-width: 320px) and (max-width: 600px) {
+  
   .row {
     flex-direction: column;
   }
