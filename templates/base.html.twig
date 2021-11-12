@@ -41,7 +41,7 @@
                            {% else %}
                            <li class="nav-item">   
                             <a class="nav-link" href="">Log In</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="">Sign in</a> </li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ path('app_register') }}">Sign in</a> </li>
                             {% endif %}
                        
                     </ul>
@@ -54,7 +54,7 @@
             <div class="container-fluid">
                 <a href="{{ path('app_home') }}"><i class="fa fa-fw fa-home"></i></a>
                 <a href="#"><i class="fas fa-user-edit"></i></a>
-                <a href=""><i class="fa fas fa-sign-out-alt"></i></a>
+                <a href="#"><i class="fa fas fa-sign-out-alt"></i></a>
             </div>
         </nav>
     </div>
