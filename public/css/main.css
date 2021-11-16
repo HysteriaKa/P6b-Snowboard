@@ -31,7 +31,7 @@ input {
   flex-direction: column;
   min-height: 70vh;
   min-width: 100vw;
-  color: #ffffff;
+  color: #fff;
   padding-bottom: 1rem;
   background-image: url("https://media.gettyimages.com/photos/snowboarder-jumping-through-air-with-deep-blue-sky-in-background-picture-id1092719712?s=2048x2048");
 }
@@ -117,7 +117,6 @@ nav {
   display: flex;
   height: 10vh;
   width: 100%;
-  /* position: fixed; */
   z-index: 9999;
   background: #fff;
 }
@@ -146,6 +145,7 @@ nav div a {
 
   font-size: 50px !important;
 }
+
 .fa-sign-out-alt {
 
   font-size:50px !important;
