@@ -12,7 +12,7 @@ class TrickFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $categoriesName = ['Jumps', 'Rotations', 'Grabs', 'Presses', 'Rail Tricks'];
-        $trickNames = ['Ollie', 'Nollie', 'Melon', 'Indy', 'Nose Grab', '50-50', 'Tail Press', 'Frontside 180', 'Backside 180', 'Butter', 'Air-to-fakie', 'Beef Curtains'];
+        $trickNames = ['Ollie', 'Nollie', 'Melon', 'Indy', 'Nose Grab', 'japan', 'Tail Press', 'Frontside 180', 'Backside 180', 'Butter', 'Air-to-fakie', 'Beef Curtains'];
 
         foreach ($categoriesName as $categoryTag) {
             $category = new Category();
