@@ -4,7 +4,24 @@
 
 {% block body %}
 <div class="jumbotron center bg-purple">
-<h1 class="center">Le site qui référencie les figures de Snowboard</h1>
+    <h1 class="center">Snowboard tricks and more</h1>
+</div>
+
+<div class="mal-1 mat-2">
+    <div class="container">
+        <div class="row align-items-start">
+            {% for trick in tricks %}
+            <div class="col mat-1">
+                <div class="card" style="width: 18rem;">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ trick.name }}</h5>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock %}
-

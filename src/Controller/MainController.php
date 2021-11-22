@@ -2,9 +2,10 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Trick;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MainController extends AbstractController
 {
@@ -13,9 +14,13 @@ class MainController extends AbstractController
      */
     public function index(): Response
     {
+        $tricks = $this->getDoctrine()
+            ->getRepository(Trick::class)->findAll();
+
         return $this->render('main/homePage.html.twig', [
             'controller_name' => 'MainController',
-            'current_menu' =>'home'
+            'current_menu' => 'home',
+            'tricks' =>$tricks
         ]);
     }
 }
