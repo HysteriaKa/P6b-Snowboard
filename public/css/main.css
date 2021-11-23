@@ -21,13 +21,9 @@ input {
 }
 
 .jumbotron {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  min-height: 70vh;
-  min-width: 100vw;
-  color: #fff;
-  padding-bottom: 1rem;
+  background-size: cover;
+  width: 100%;
+  min-height: 32vw;
   background-image: url("https://media.gettyimages.com/photos/snowboarder-jumping-through-air-with-deep-blue-sky-in-background-picture-id1092719712?s=2048x2048");
 }
 
@@ -124,7 +120,7 @@ nav div a {
 .fa,
 .fas {
   color: black;
-  font-size: 50px !important;
+  font-size: 40px !important;
 }
 
 /* margin et padding*/
@@ -139,6 +135,9 @@ nav div a {
 }
 .mat-2 {
   margin-top: 2rem;
+}
+.mat-3 {
+  margin-top: 3rem;
 }
 .mar-1 {
   margin-right: 1rem;
@@ -161,10 +160,12 @@ nav div a {
   font-size: 15px;
   text-decoration: none;
 }
-/* .mobile {
+.wrapper {
+  display: grid;
+  grid-template-columns: 2fr 2fr 2fr 2fr 2fr;
+}
 
-  display : none;
-} */
+
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
   .row {
     flex-direction: column;
@@ -172,6 +173,14 @@ nav div a {
   #inputPassword,
   #inputEmail {
     width: 60%;
+  }
+  .row {
+    flex-direction: column !important;
+  }
+  .container{
+    align-items: center;
+    justify-content: center;
+    display: flex;
   }
 }
 @media (min-width: 600px) and (max-width: 1024px) {
@@ -182,13 +191,30 @@ nav div a {
   #inputEmail {
     width: 60%;
   }
+  .row {
+    flex-direction: column !important;
+  }
+  .container{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
 }
 @media (min-width: 320px) and (max-width: 600px) {
   .row {
     flex-direction: column;
+    text-align: center;
   }
   #inputPassword,
   #inputEmail {
     width: 60%;
+  }
+  .row {
+    flex-direction: column !important;
+  }
+  .container{
+    align-items: center;
+    justify-content: center;
+    display: flex;
   }
 }

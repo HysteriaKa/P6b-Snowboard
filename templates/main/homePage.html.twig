@@ -3,20 +3,20 @@
 {% block title %}Welcome on SnowTrick website!{% endblock %}
 
 {% block body %}
-<div class="jumbotron center bg-purple">
+<div class="jumbotron">
     <h1 class="center">Snowboard tricks and more</h1>
 </div>
-
+<h1 class="center mat-2">Some Tricks</h1>
 <div class="mal-1 mat-2">
     <div class="container">
-        <div class="row align-items-start">
+        <div class="row row-cols-5 align-items-start justify-content-center">
             {% for trick in tricks %}
-            <div class="col mat-1">
-                <div class="card" style="width: 18rem;">
-                    <img src="..." class="card-img-top" alt="...">
+            <div class="col mab-1">
+                <div class="card" style="width: 16rem;">
+                    <img src="https://ridestoremagazine.imgix.net/http%3A%2F%2Fwordpress-604950-1959020.cloudwaysapps.com%2Fwp-content%2Fuploads%2F2021%2F04%2Ftrick-tip-how-to-carve-on-a-snowboard-ridestore-magazine.jpg?ixlib=gatsbySourceUrl-1.6.9&auto=format%2Ccompress&crop=faces%2Centropy&fit=crop&w=689&h=689&s=868b5103de49cfc6e17654a07f04dd4e" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">{{ trick.name }}</h5>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <a href="trick/{{trick.slug}}"><h5 class="card-title">{{ trick.name }}</h5></a>
+                        
                     </div>
                 </div>
             </div>
@@ -24,4 +24,14 @@
         </div>
     </div>
 </div>
+{#<div class="wrapper mal-3 mat-3">
+    {% for trick in tricks %}
+    <div class="card mab-1" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{ trick.name }}</h5>
+        </div>
+    </div>
+    {% endfor %}
+</div>#}
 {% endblock %}
