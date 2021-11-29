@@ -29,6 +29,7 @@ class MainController extends AbstractController
         $qty = $request->query->get('showTricks');
         if ($qty === NULL) $qty= 15;
         $tricks = $this->repository->showTricks($qty);
+        $allTricks = $this->repository->findAll();
         return $this->render('main/homePage.html.twig', [
             'controller_name' => 'MainController',
             'current_menu' => 'home',

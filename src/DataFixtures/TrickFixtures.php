@@ -14,7 +14,7 @@ class TrickFixtures extends Fixture
     {
         $faker = Faker\Factory::create("fr_FR");
         $categoriesName = ['Jumps', 'Rotations', 'Grabs', 'Presses', 'Rail Tricks'];
-        $trickNames = ['Ollie', 'Nollie', 'Melon', 'Indy', 'Nose Grab', 'japan', 'Tail Press', 'Frontside 180', 'Backside 180', 'Butter', 'Air-to-fakie', 'Beef Curtains','truck drive','mute','sad'];
+        $trickNames = ['Ollie', 'Nollie', 'Melon', 'Indy', 'Nose Grab', 'japan', 'Tail Press', 'Frontside 180', 'Backside 180', 'Butter', 'Air-to-fakie', 'Beef Curtains','truck drive','mute','sad','Chicken salad','Drunk Driver','Canadian Bacon','Gorilla'];
         $entitiesCategories =[];
 
         foreach ($categoriesName as $categoryTag) {

@@ -42,6 +42,8 @@
                            {% else %}
                            <li class="nav-item">   
                             <a class="nav-link" href="{{ path('app_login') }}">Log In</a></li>
+                            <li>
+                            <a class="nav-link" href="{{ path('app_register') }}">Register</a></li>
                           
                             {% endif %}
                        
@@ -64,6 +66,9 @@
             </div>
         </nav>
     </div>
+    {% for message in app.flashes('message')%}
+    <div class="error center">{{ message }}</div>
+    {% endfor %}
     {#<nav class="mb-1 justif-space-between ver-center navbar navbar-expand-lg">
 
         <a href="{{ path('app_home') }}"><img class="logoNav start" alt="Logo de snowtricks"

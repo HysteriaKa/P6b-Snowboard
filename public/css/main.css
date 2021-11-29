@@ -23,7 +23,7 @@ input {
 .jumbotron {
   background-size: cover;
   width: 100%;
-  min-height: 32vw;
+  min-height: 45vw;
   background-image: url("https://media.gettyimages.com/photos/snowboarder-jumping-through-air-with-deep-blue-sky-in-background-picture-id1092719712?s=2048x2048");
 }
 
@@ -89,7 +89,20 @@ input {
   border-left: none;
   width: 30%;
 }
+.fa-arrow-down {
 
+  bottom: 119px;
+  right: 46px;
+  color: black;
+  position: fixed;
+}
+.fa-arrow-up {
+
+  bottom: 45px;
+  right: 46px;
+  color: black;
+  position: fixed;
+}
 nav {
   display: flex;
   height: 10vh;
@@ -151,7 +164,17 @@ nav div a {
 .mal-3 {
   margin-left: 3rem;
 }
+/* disparition de la flèche*/
+.return180{
+  transform: rotate(180deg);
+  opacity: 1;
+  transition: 1s;
+}
 
+.return0{
+  opacity: 0;
+  transition: 1s;
+}
 /* buttons*/
 .btn {
   cursor: pointer;

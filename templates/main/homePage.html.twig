@@ -1,37 +1,37 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Welcome on SnowTrick website!{% endblock %}
+{% block javascripts %}
 
+{% endblock %}
 {% block body %}
 <div class="jumbotron">
-    <h1 class="center">Snowboard tricks and more</h1>
+    <h1 id="up" class="center">Snowboard tricks and more</h1>
+  
+    <a href="#bloctricks"><i class="fas fa-arrow-down" id="arrow"></i></a>
+
 </div>
 <h1 class="center mat-2">Some Tricks</h1>
-<div class="mal-1 mat-2">
+<div class="mal-1 mat-2 tricksContainer" id="bloctricks">
     <div class="container">
         <div class="row row-cols-5 align-items-start justify-content-center">
+            {% set nbTricks = 0 %}
             {% for trick in tricks %}
             <div class="col mab-1">
                 <div class="card" style="width: 16rem;">
                     <img src="https://ridestoremagazine.imgix.net/http%3A%2F%2Fwordpress-604950-1959020.cloudwaysapps.com%2Fwp-content%2Fuploads%2F2021%2F04%2Ftrick-tip-how-to-carve-on-a-snowboard-ridestore-magazine.jpg?ixlib=gatsbySourceUrl-1.6.9&auto=format%2Ccompress&crop=faces%2Centropy&fit=crop&w=689&h=689&s=868b5103de49cfc6e17654a07f04dd4e" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <a href="trick/{{trick.slug}}"><h5 class="card-title">{{ trick.name }}</h5></a>
-                        
+                        <a href="trick/{{trick.slug}}"><h5 class="card-title">{{ trick.name }}</h5></a>   
                     </div>
                 </div>
             </div>
+            {% set nbTricks = nbTricks + 1 %}
             {% endfor %}
         </div>
     </div>
+   {% if nbTricks > 15 %}
+    <a href="#up"><i class="fas fa-arrow-up"></i></a>
+    {% endif %}
 </div>
-{#<div class="wrapper mal-3 mat-3">
-    {% for trick in tricks %}
-    <div class="card mab-1" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">{{ trick.name }}</h5>
-        </div>
-    </div>
-    {% endfor %}
-</div>#}
+<script src="{{asset('js/arrowGeoffray.js')}}"></script>
 {% endblock %}
