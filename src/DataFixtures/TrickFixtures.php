@@ -28,7 +28,7 @@ class TrickFixtures extends Fixture
             $trick = new Trick();
             $trick->setName($trickName);
             $trick->setDescription($faker->sentence($nbWords=35, $variableNbWords=true));
-            $trick->setCreatedAt(new \DateTimeImmutable);
+            $trick->setCreatedAt(new \DateTime);
             $idCategory = rand(0,count($categoriesName)-1);
             $trick->setCategory($entitiesCategories[$idCategory]);
             $trick->setSlug($trickName);
