@@ -6,6 +6,7 @@ use App\Entity\Trick;
 use App\Entity\Category;
 use App\Form\EditTrickType;
 use App\Repository\TrickRepository;
+use App\Repository\UserRepository;
 use PhpParser\Node\Expr\Cast\String_;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,10 +18,16 @@ class MainController extends AbstractController
 {
 
     private $repoTricks;
+    private $user;
 
     public function __construct(TrickRepository $repoTricks)
     {
         $this->repository = $repoTricks;
+
+        // if($this->getUser() && !$this->getUser()->getIsVerified()){
+        //     $this->addFlash('message','You need to verify your adress. Check your mails.');
+        //     return $this->redirectToRoute('app_logout');
+        // }
     }
 
     /**
@@ -28,11 +35,15 @@ class MainController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        $incrementTricks =15;
+        $user = $this->getUser();
+        if ($user && $user->IsVerified() === false) {
+            $this->addFlash('message', 'Check your emails to verify your email and enjoy all the fun. ');
+        }
+        $incrementTricks = 15;
         $start = $request->query->get('showTricks');
         if ($start === NULL) $start = 0;
         else $start = intval($start);
-        $tricks = $this->repository->showTricks($start+$incrementTricks);
+        $tricks = $this->repository->showTricks($start + $incrementTricks);
         $allTricksQty = count($this->repository->findAll());
         return $this->render('main/homePage.html.twig', [
             'controller_name' => 'MainController',
@@ -48,8 +59,6 @@ class MainController extends AbstractController
     public function allTrick()
     {
         $tricks = $this->repository->findAll();
-      
-
         return $this->render('main/allTricks.html.twig', [
             'tricks' => $tricks
         ]);

@@ -59,7 +59,7 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
         if (!$user) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Aucun compte associé à cet email.');
+            throw new CustomUserMessageAuthenticationException('No account for this email.');
         }
 
         return $user;
@@ -68,6 +68,7 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+       
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
