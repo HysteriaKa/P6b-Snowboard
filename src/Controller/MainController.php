@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Trick;
+use App\Entity\Category;
+use App\Form\EditTrickType;
 use App\Repository\TrickRepository;
 use PhpParser\Node\Expr\Cast\String_;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +35,8 @@ class MainController extends AbstractController
         return $this->render('main/homePage.html.twig', [
             'controller_name' => 'MainController',
             'current_menu' => 'home',
-            'tricks' => $tricks
+            'tricks' => $tricks,
+            'allTricks'=> $allTricks
         ]);
     }
 
@@ -47,6 +50,29 @@ class MainController extends AbstractController
   
         return $this->render('main/trick.html.twig', [
             'trick' => $trick
+        ]);
+    }
+
+    /**
+     * @route("/trick/edit/{id}", name="trick_edit") 
+     */
+    public function editTrick(int $id, Request $request)
+    {
+        $trick= $this->repository->findOneBy(['id' => $id]);
+        $idCategory =$trick->getCategory();
+        $category = $this->getDoctrine()->getRepository(Category::class)->findOneBy(['id'=>$idCategory]);
+        
+        $form = $this->createForm(EditTrickType::class);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+        
+            $this->addFlash('succes', 'This trick has been updated ');
+            return $this->redirectToRoute('app_home');
+        }
+  
+        return $this->render('main/ediTrick.html.twig', [
+            'trick' => $trick,
+            'form'=>$form->createView()
         ]);
     }
 }
