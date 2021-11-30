@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit {{ trick.name }}!{% endblock %}
+
+{% block body %}
+
+    {% for message in app.flashes('message')%}
+    <div class="error center">{{ message }}</div>
+    {% endfor %}
+    <h1 class="center mab-2 mat-2">Edit {{ trick.name }}</h1>
+    <div class="center">
+        {{ form_start(form) }}
+        <div class="center d-flex column mab-2 mat-1">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'value': trick.name} ) }}
+        </div>
+        <div class="center d-flex column mab-2">
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description) }}
+        </div>
+        
+        <button type="submit" class="btn btn-dark">Modify this trick</button>
+        {{ form_end(form) }}
+        </div>
+{% endblock %}
