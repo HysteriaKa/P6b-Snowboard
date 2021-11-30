@@ -104,12 +104,14 @@ footer{
   right: 46px;
   color: black;
   position: fixed;
+  font-size: 40px;
 }
 .fa-arrow-up {
   bottom: 45px;
   right: 46px;
   color: black;
   position: fixed;
+  font-size: 40px;
 }
 nav {
   display: flex;
