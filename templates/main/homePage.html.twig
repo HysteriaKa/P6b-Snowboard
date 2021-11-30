@@ -7,10 +7,11 @@
 {% block body %}
 <div class="jumbotron">
     <h1 id="up" class="center">Snowboard tricks and more</h1>
-
     <a href="#bloctricks"><i class="fas fa-arrow-down" id="arrow"></i></a>
-
 </div>
+{% for message in app.flashes('message')%}
+<div class="error center">{{ message }}</div>
+{% endfor %}
 <h1 class="center mat-2">Some Tricks</h1>
 <div class="mal-1 mat-2 tricksContainer" id="bloctricks">
     <div class="container">
@@ -18,13 +19,17 @@
             {% set nbTricks = 0 %}
             {% for trick in tricks %}
             <div class="col mab-1">
-                <div class="card" style="width: 16rem;">
+                <div class="card" style="width: 16rem;" id="trick{{nbTricks}}">
                     <img src="https://ridestoremagazine.imgix.net/http%3A%2F%2Fwordpress-604950-1959020.cloudwaysapps.com%2Fwp-content%2Fuploads%2F2021%2F04%2Ftrick-tip-how-to-carve-on-a-snowboard-ridestore-magazine.jpg?ixlib=gatsbySourceUrl-1.6.9&auto=format%2Ccompress&crop=faces%2Centropy&fit=crop&w=689&h=689&s=868b5103de49cfc6e17654a07f04dd4e"
                         class="card-img-top" alt="...">
                     <div class="card-body">
                         <a href="trick/{{trick.slug}}">
-                            <h5 class="card-title">{{ trick.name }}</h5>
+                            <h5 class="card-title mar-1 ">{{ trick.name }}</h5>
                         </a>
+                        {% if app.user %}
+                        <a href="/trick/edit/{{trick.id}}"><i class="fas fa-pencil-alt mar-1"></i></a>
+                        <a href=""><i class="fas fa-trash-alt"></i></a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -37,13 +42,9 @@
     <a href="#up"><i class="fas fa-arrow-up"></i></a>
     {% endif %}#}
 </div>
-{% set nbAllTricks = 0 %}
-{% for tricks in allTricks %}
-{% set nbAllTricks = nbAllTricks + 1 %}
-{% endfor %}
-{% if nbAllTricks > nbTricks %}
+{% if allTricksQty > nbTricks %}
 <div class="center">
-    <a href="" class="btn btn-dark">Load more</a>
+    <a href="/?showTricks={{nbTricks}}#trick{{nbTricks}}" class="btn btn-dark">Load more</a>
 </div>
 <a href="#up"><i class="fas fa-arrow-up"></i></a>
 {% endif %}

@@ -28,20 +28,60 @@ class MainController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        $qty = $request->query->get('showTricks');
-        if ($qty === NULL) $qty = 15;
-        $tricks = $this->repository->showTricks($qty);
-        $allTricks = $this->repository->findAll();
+        $incrementTricks =15;
+        $start = $request->query->get('showTricks');
+        if ($start === NULL) $start = 0;
+        else $start = intval($start);
+        $tricks = $this->repository->showTricks($start+$incrementTricks);
+        $allTricksQty = count($this->repository->findAll());
         return $this->render('main/homePage.html.twig', [
             'controller_name' => 'MainController',
             'current_menu' => 'home',
             'tricks' => $tricks,
-            'allTricks' => $allTricks
+            'allTricksQty' => $allTricksQty
         ]);
     }
 
     /**
-     * @route("/trick/{slug}", name="trick") 
+     * @route("/tricks", name="app_tricks") 
+     */
+    public function allTrick()
+    {
+        $tricks = $this->repository->findAll();
+      
+
+        return $this->render('main/allTricks.html.twig', [
+            'tricks' => $tricks
+        ]);
+    }
+
+    /**
+     * @route("/trick/addTrick", name="app_add_trick") 
+     */
+    public function addTrick(Request $request)
+    {
+        $trick = new Trick;
+        dd($trick);
+        $form = $this->createForm(EditTrickType::class, $trick);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $trick->setCreatedAt(new \dateTime());
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            $this->addFlash('message', 'You added a new trick !');
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('main/addTrick.html.twig', [
+            'form' => $form->createView(),
+
+        ]);
+    }
+
+    /**
+     * @route("/trick/{slug}", name="app_trick") 
      */
     public function showTrick(String $slug, Request $request)
     {
@@ -52,9 +92,8 @@ class MainController extends AbstractController
             'trick' => $trick
         ]);
     }
-
     /**
-     * @route("/trick/edit/{id}", name="trick_edit") 
+     * @route("/trick/edit/{id}", name="app_trick_edit") 
      */
     public function editTrick(int $id, Request $request)
     {
@@ -65,8 +104,8 @@ class MainController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();       
-            $trick->setUpdateAt(new \dateTime());        
+            $data = $form->getData();
+            $trick->setUpdateAt(new \dateTime());
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             $this->addFlash('message', 'This trick has been updated ');

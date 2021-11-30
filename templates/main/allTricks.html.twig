@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}All Tricks !!{% endblock %}
+
+{% block body %}
+
+    <h1 class="center mab-2 mat-2">All tricks !</h1>
+    <div class="center">
+        <a href="{{ path('app_add_trick')}}" class=" btn btn-dark">Add a Trick !</a>
+    </div>
+    <div class="mal-1 mat-2 tricksContainer" id="bloctricks">
+        <div class="container">
+            <div class="row row-cols-5 align-items-start justify-content-center">
+                {% for trick in tricks %}
+                <div class="col mab-1">
+                    <div class="card" style="width: 16rem;">
+                        <img src="https://ridestoremagazine.imgix.net/http%3A%2F%2Fwordpress-604950-1959020.cloudwaysapps.com%2Fwp-content%2Fuploads%2F2021%2F04%2Ftrick-tip-how-to-carve-on-a-snowboard-ridestore-magazine.jpg?ixlib=gatsbySourceUrl-1.6.9&auto=format%2Ccompress&crop=faces%2Centropy&fit=crop&w=689&h=689&s=868b5103de49cfc6e17654a07f04dd4e"
+                            class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <a href="trick/{{trick.slug}}">
+                                <h5 class="card-title mar-1 ">{{ trick.name }}</h5>
+                            </a>
+                            {% if app.user %}
+                            <a href="/trick/edit/{{trick.id}}"><i class="fas fa-pencil-alt mar-1"></i></a>
+                            <a href=""><i class="fas fa-trash-alt"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+               
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+       
+{% endblock %}

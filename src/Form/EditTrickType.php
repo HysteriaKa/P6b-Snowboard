@@ -17,11 +17,11 @@ class EditTrickType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('description', TextareaType::class)
-            ->add('slug', TextType::class)
-            // ->add('category', EntityType::class,['class'=>Category::class])
-            ->add("Submit", SubmitType::class);
+            ->add('name', TextType::class, ['attr' =>['class'=>'form-control']] )
+            ->add('description', TextareaType::class, ['attr' =>['class'=>'form-control']])
+            ->add('slug', TextType::class, ['attr' =>['class'=>'form-control']])
+            ->add('category', EntityType::class,['class'=>Category::class])
+            ->add("Submit", SubmitType::class, ['attr' =>['class'=>'btn-dark']]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
