@@ -20,14 +20,14 @@ class TrickFixtures extends Fixture
         foreach ($categoriesName as $categoryTag) {
             $category = new Category();
             $category->setName($categoryTag);
-            $category->setDescription($faker->sentence($nbWords=15, $variableNbWords=true));
+            $category->setDescription($faker->sentence());
             $manager->persist($category);
             array_push($entitiesCategories, $category);
         }
         foreach ($trickNames as $trickName) {            
             $trick = new Trick();
             $trick->setName($trickName);
-            $trick->setDescription($faker->sentence($nbWords=35, $variableNbWords=true));
+            $trick->setDescription($faker->sentence());
             $trick->setCreatedAt(new \DateTime);
             $idCategory = rand(0,count($categoriesName)-1);
             $trick->setCategory($entitiesCategories[$idCategory]);

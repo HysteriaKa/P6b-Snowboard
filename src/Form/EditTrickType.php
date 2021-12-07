@@ -22,6 +22,7 @@ class EditTrickType extends AbstractType
             ->add('slug', TextType::class, ['attr' =>['class'=>'form-control']])
             ->add('category', EntityType::class,['class'=>Category::class])
             ->add("Submit", SubmitType::class, ['attr' =>['class'=>'btn-dark']]);
+           
     }
 
     public function configureOptions(OptionsResolver $resolver): void
