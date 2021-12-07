@@ -11,15 +11,13 @@ input {
   border-bottom: solid #211a44;
   border-left: none;
 }
-footer{
-
-  bottom: 30px;
+footer {
+  bottom: 20px;
   position: fixed;
   right: 50px;
   left: 50px;
 }
 .center {
-
   justify-content: center;
   text-align: center;
   align-items: center;
@@ -29,7 +27,6 @@ footer{
 }
 
 .jumbotron {
-
   background-size: cover;
   width: 100%;
   min-height: 45vw;
@@ -37,7 +34,6 @@ footer{
 }
 
 .jumbotron div {
-
   color: #fff;
   width: 100%;
 }
@@ -112,6 +108,20 @@ footer{
   color: black;
   position: fixed;
   font-size: 40px;
+}
+.fa-pencil-alt,
+.fa-trash-alt {
+  color: black;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+button {
+  border: none;
+  background: #ffffffff;
 }
 nav {
   display: flex;
@@ -196,11 +206,9 @@ nav div a {
   grid-template-columns: 2fr 2fr 2fr 2fr 2fr;
 }
 .card-body {
-
   display: flex !important;
 }
 .form-control {
-
   width: 40%;
 }
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
@@ -219,7 +227,6 @@ nav div a {
     justify-content: center;
     display: flex;
   }
-
 }
 @media (min-width: 600px) and (max-width: 1024px) {
   .row {

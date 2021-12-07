@@ -63,18 +63,18 @@ class MainController extends AbstractController
     }
 
     /**
-     * @route("/trick/addTrick", name="app_add_trick") 
+     * @route("/profil/addTrick", name="app_add_trick") 
      */
     public function addTrick(Request $request)
     {
         $trick = new Trick;
         // $category =$this->getDoctrine()->getRepository(Category::class)->findAll();
-        
+
         $form = $this->createForm(EditTrickType::class, $trick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-           
+
             $trick->setCreatedAt(new \dateTime());
             $em = $this->getDoctrine()->getManager();
             $em->persist($trick);
@@ -88,21 +88,25 @@ class MainController extends AbstractController
 
         ]);
     }
-
     /**
-     * @route("/trick/{slug}", name="app_trick") 
+     * @Route("/profil/deleteTrick/{id}", name="app_trick_delete")
      */
-    public function showTrick(String $slug)
+    public function delete(Request $request, int $id): Response
     {
-        $trick = $this->repository->findOneBy(['slug' => $slug]);
-        $slug = $trick->getSlug();
+        $trick = $this->repository->findOneBy(['id' => $id]);
+       
+        if ($this->isCsrfTokenValid('delete' . $trick->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($trick);
+            $entityManager->flush();
 
-        return $this->render('main/trick.html.twig', [
-            'trick' => $trick
-        ]);
+            $this->addFlash('success', 'The trick has been deleted !');
+            return $this->redirectToRoute('app_home');
+        }
+
     }
     /**
-     * @route("/trick/edit/{id}", name="app_trick_edit") 
+     * @route("/profil/edit/{id}", name="app_trick_edit") 
      */
     public function editTrick(int $id, Request $request)
     {
@@ -125,6 +129,19 @@ class MainController extends AbstractController
             'trick' => $trick,
             'form' => $form->createView(),
             'category' => $category
+        ]);
+    }
+
+    /**
+     * @route("/trick/{slug}", name="app_trick") 
+     */
+    public function showTrick(String $slug)
+    {
+        $trick = $this->repository->findOneBy(['slug' => $slug]);
+        $slug = $trick->getSlug();
+
+        return $this->render('main/trick.html.twig', [
+            'trick' => $trick
         ]);
     }
 }
