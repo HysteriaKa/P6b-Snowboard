@@ -17,8 +17,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class MainController extends AbstractController
 {
 
-    private $repoTricks;
-    private $user;
 
     public function __construct(TrickRepository $repoTricks)
     {
@@ -70,14 +68,16 @@ class MainController extends AbstractController
     public function addTrick(Request $request)
     {
         $trick = new Trick;
-        dd($trick);
+        // $category =$this->getDoctrine()->getRepository(Category::class)->findAll();
+        
         $form = $this->createForm(EditTrickType::class, $trick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+           
             $trick->setCreatedAt(new \dateTime());
             $em = $this->getDoctrine()->getManager();
+            $em->persist($trick);
             $em->flush();
             $this->addFlash('message', 'You added a new trick !');
             return $this->redirectToRoute('app_home');
@@ -92,7 +92,7 @@ class MainController extends AbstractController
     /**
      * @route("/trick/{slug}", name="app_trick") 
      */
-    public function showTrick(String $slug, Request $request)
+    public function showTrick(String $slug)
     {
         $trick = $this->repository->findOneBy(['slug' => $slug]);
         $slug = $trick->getSlug();
