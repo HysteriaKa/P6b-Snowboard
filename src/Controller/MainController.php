@@ -2,15 +2,20 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Entity\Media;
 use App\Entity\Trick;
 use App\Entity\Category;
 use App\Form\EditTrickType;
-use App\Repository\TrickRepository;
+use App\Services\FileUploader;
+use App\Services\MediaUploader;
 use App\Repository\UserRepository;
+use App\Repository\TrickRepository;
 use PhpParser\Node\Expr\Cast\String_;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
@@ -35,7 +40,7 @@ class MainController extends AbstractController
     {
         $user = $this->getUser();
         if ($user && $user->IsVerified() === false) {
-            $this->addFlash('message', 'Check your emails to verify your email and enjoy all the fun. ');
+            $this->addFlash('success', 'Check your emails to verify your email and enjoy all the fun. ');
         }
         $incrementTricks = 15;
         $start = $request->query->get('showTricks');
@@ -65,21 +70,42 @@ class MainController extends AbstractController
     /**
      * @route("/profil/addTrick", name="app_add_trick") 
      */
-    public function addTrick(Request $request)
+    public function addTrick(Request $request, SluggerInterface $slugger)
     {
         $trick = new Trick;
+
         // $category =$this->getDoctrine()->getRepository(Category::class)->findAll();
 
         $form = $this->createForm(EditTrickType::class, $trick);
         $form->handleRequest($request);
+        if ($form->isSubmitted()  && $form->isValid()) {
 
-        if ($form->isSubmitted() && $form->isValid()) {
+            $files = $form->get('media')->getData();
+
+            if ($files) {
+                foreach ($files as $file) {
+                    // $type = $this->defineType();
+                    // $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                    // $safeFilename = $slugger->slug($originalFilename);
+                    // $newFilename = $safeFilename . '-' . uniqid() . '.' . $media->guessExtension();
+                    // $newMedia = new FileUploader($image, $slugger);
+
+                    $newFile = new MediaUploader('uploads', $slugger, $file);
+                    dd($newFile);
+                    $newFile->add($file);
+                    dd($newFile);
+                    $media = new Media;
+
+                    // $video->setFilename();
+
+                }
+            }
 
             $trick->setCreatedAt(new \dateTime());
             $em = $this->getDoctrine()->getManager();
             $em->persist($trick);
             $em->flush();
-            $this->addFlash('message', 'You added a new trick !');
+            $this->addFlash('success', 'You added a new trick !');
             return $this->redirectToRoute('app_home');
         }
 
@@ -94,7 +120,7 @@ class MainController extends AbstractController
     public function delete(Request $request, int $id): Response
     {
         $trick = $this->repository->findOneBy(['id' => $id]);
-       
+
         if ($this->isCsrfTokenValid('delete' . $trick->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($trick);
@@ -103,7 +129,6 @@ class MainController extends AbstractController
             $this->addFlash('success', 'The trick has been deleted !');
             return $this->redirectToRoute('app_home');
         }
-
     }
     /**
      * @route("/profil/edit/{id}", name="app_trick_edit") 
@@ -121,7 +146,7 @@ class MainController extends AbstractController
             $trick->setUpdateAt(new \dateTime());
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            $this->addFlash('message', 'This trick has been updated ');
+            $this->addFlash('success', 'This trick has been updated ');
             return $this->redirectToRoute('app_home');
         }
 
@@ -143,5 +168,19 @@ class MainController extends AbstractController
         return $this->render('main/trick.html.twig', [
             'trick' => $trick
         ]);
+    }
+
+    /**
+     * @route("profil/editProfil/{id}",name="app_editProfil")
+     */
+    public function editProfil(Request $request, int $id)
+    {
+
+        $id = $id;
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findOneBy(['id' => $id]);
+        dd($user);
+        return $this->render('main/editProfil.html.twig', ['user'=>$user]);
     }
 }

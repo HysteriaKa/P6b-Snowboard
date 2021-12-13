@@ -9,8 +9,11 @@
     <h1 id="up" class="center">Snowboard tricks and more</h1>
     <a href="#bloctricks"><i class="fas fa-arrow-down" id="arrow"></i></a>
 </div>
-{% for message in app.flashes('message')%}
-<div class="error center">{{ message }}</div>
+{% for message in app.flashes('success')%}
+<div class="success">{{ message }}</div>
+{% endfor %}
+{% for message in app.flashes('error')%}
+<div class="error">{{ message }}</div>
 {% endfor %}
 <h1 class="center mat-2">Some Tricks</h1>
 <div class="mal-1 mat-2 tricksContainer" id="bloctricks">
