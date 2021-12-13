@@ -5,18 +5,18 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Media;
 use App\Entity\Trick;
+use App\Form\UserType;
 use App\Entity\Category;
 use App\Form\EditTrickType;
-use App\Services\FileUploader;
+use App\Services\DocUploader;
 use App\Services\MediaUploader;
-use App\Repository\UserRepository;
 use App\Repository\TrickRepository;
-use PhpParser\Node\Expr\Cast\String_;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class MainController extends AbstractController
@@ -173,14 +173,43 @@ class MainController extends AbstractController
     /**
      * @route("profil/editProfil/{id}",name="app_editProfil")
      */
-    public function editProfil(Request $request, int $id)
+    public function editProfil(Request $request, int $id, SluggerInterface $slugger)
     {
 
         $id = $id;
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->findOneBy(['id' => $id]);
-        dd($user);
-        return $this->render('main/editProfil.html.twig', ['user'=>$user]);
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $avatarfile = $form->get('avatar')->getData();
+            if($avatarfile){
+                $originalFilename = pathinfo($avatarfile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$avatarfile->guessExtension();
+               
+                try {
+                    $avatarfile->move(
+                        $this->getParameter('media_directory'),
+                        $newFilename
+                    );
+                    $em = $this->getDoctrine()->getManager();
+                    $user->setAvatar($newFilename);
+                    $em->flush();
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Something went wrong');
+                }
+
+            }
+            $em = $this->getDoctrine()->getManager();
+            $user->setAvatar($newFilename);
+            $em->flush();
+            $this->addFlash('success', 'You did great !');
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('main/editProfil.html.twig', ['user' => $user, 'form'=>$form->createView()]);
     }
 }

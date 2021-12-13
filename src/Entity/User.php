@@ -50,6 +50,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $username;
 
     /**
+     * @Assert\Image(
+     *     minWidth = 200,
+     *     maxWidth = 300,
+     *     minHeight = 200,
+     *     maxHeight = 300,
+     *     allowLandscape = false,
+     *     allowPortrait = false
+     * )
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $avatar;
@@ -86,7 +94,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     /**
