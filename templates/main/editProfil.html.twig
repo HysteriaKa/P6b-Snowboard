@@ -1,6 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit my profil {{ name }}!{% endblock %}
+{% block title %}Edit my profil !{% endblock %}
+
 
 {% block body %}
+
+<h1 class="center mab-2"> My profil</h1>
+<div class="d-flex center">
+<div class="card  mab-2" style="width: 18rem;">
+    <img src="{{ asset('/uploads/' ~ user.avatar)}}" alt="avatar" id="avatar" class="card-img-top">
+    <div class="card-body d-flex center">
+        <p class="">{{ user.username }}</p>
+    </div>
+</div>
+</div>
+<h2 class="center">Add a username and my awesome picture</h2>
+<div class="center">
+    {{ form_start(form) }}
+    <div class="center d-flex column mab-2 mat-1">
+    {{form_label(form.username) }}
+    {{form_widget(form.username) }}
+</div>
+<div class="center d-flex column mab-2 mat-1">
+    {{ form_label(form.avatar) }}
+    {{ form_widget(form.avatar) }}
+</div>
+    {{ form_end(form) }}
+</div>
+
 {% endblock %}
