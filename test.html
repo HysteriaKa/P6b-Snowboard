@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+        }
+        
+        main {
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        main > img {
+            width: 100%;
+            filter: blur(16px);
+            /* height: 40rem; */
+            /* object-fit: cover; */
+            position: absolute;
+            z-index: -1;
+        }
+        
+        header {
+            background: white;
+        }
+        
+        section {
+            width: 80%;
+            margin: auto;
+            /* position: relative; */
+            /* margin-top: -30rem; */
+            background-color: white;
+            min-height: calc(100vh - 3rem);
+        }
+        
+        section img {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img>
+        <nav>
+            home
+            trick
+        </nav>
+    </header>
+    <main>
+        <img src="https://media.gettyimages.com/photos/snowboarder-jumping-through-air-with-deep-blue-sky-in-background-picture-id1092719712?s=2048x2048">
+        <section>
+            <img src="https://media.gettyimages.com/photos/snowboarder-jumping-through-air-with-deep-blue-sky-in-background-picture-id1092719712?s=2048x2048">
+            <aside>
+                contient les miniatures
+            </aside>
+            <p>blabla</p>
+        </section>
+    </main>
+</body>
+</html>

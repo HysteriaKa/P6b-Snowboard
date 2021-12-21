@@ -3,6 +3,54 @@
 {% block title %}{{ trick.name }}!{% endblock %}
 
 {% block body %}
-<h1>{{ trick.name }}</h1>
-<p>{{ trick.description }}</p>
+{% if medias %}
+<main>
+    <div class="jumbotron" style="background-image: url('{{ asset('/uploads/' ~ medias[0].filename) }}');">
+        <h1 class="center">{{ trick.name }}</h1>
+
+    </div>
+    {% else %}
+    <div class="jumbotron"
+        style="background-image: url('https://media.gettyimages.com/photos/snowboarder-jumping-through-air-with-deep-blue-sky-in-background-picture-id1092719712?s=2048x2048');">
+        <h1 class="center">{{ trick.name }}</h1>
+    </div>
+{% endif %}
+    <section>
+        <div class="">
+            {% if medias %}
+            {% if medias[0].type == "image" %}
+            <img src="{{ asset('/uploads/' ~ medias[0].filename)}}" alt="trick-image"
+                class="rounded mx-auto d-block image-trick">
+                {% if app.user and app.user.isVerified %}
+                <div>
+                    <div class="">
+                        <a href="/profil/edit/{{trick.id}}"><i class="fas fa-pencil-alt mar-2 rightUp"></i></a>
+                    </div>
+                    <div class="">
+                        <form method="post" action="{{ path('app_trick_delete', {'id': trick.id}) }}"
+                            onsubmit="return confirm('Are you sure you want to delete this amazing trick?');">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">
+                            <button class="fas"><i class="fas fa-trash-alt mr-2 rightUp"></i></button>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+            {% endif %}
+            {% endif %}
+        </div>
+        <p class="center">{{ trick.description }}</p>
+        <div class="container">   
+            <div class="row">
+                {% for media in medias %}
+                <div class="col-xs-3">
+                    <a href="{{ asset('/uploads/' ~ media.filename)}}" class="thumbnail">
+                        <img src="{{ asset('/uploads/' ~ media.filename)}}" alt="Image 1"class="thumbnail" />
+                    </a>
+                </div>  
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</main>
 {% endblock %}

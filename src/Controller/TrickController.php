@@ -11,6 +11,7 @@ use App\Form\EditTrickType;
 use App\Services\DocUploader;
 use App\Services\MediaUploader;
 use App\Repository\TrickRepository;
+use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,18 +20,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-class MainController extends AbstractController
+class TrickController extends AbstractController
 {
 
 
     public function __construct(TrickRepository $repoTricks)
     {
         $this->repository = $repoTricks;
-
-        // if($this->getUser() && !$this->getUser()->getIsVerified()){
-        //     $this->addFlash('message','You need to verify your adress. Check your mails.');
-        //     return $this->redirectToRoute('app_logout');
-        // }
     }
 
     /**
@@ -46,13 +42,30 @@ class MainController extends AbstractController
         $start = $request->query->get('showTricks');
         if ($start === NULL) $start = 0;
         else $start = intval($start);
+        $completedTricks = [];
         $tricks = $this->repository->showTricks($start + $incrementTricks);
+        foreach ($tricks as $key => $value) {
+            $medias = $this->getDoctrine()->getRepository(Media::class)->findBy(['trick' => $value->getId()]);
+            if (count($medias) === 0) {
+                $url = "https://ridestoremagazine.imgix.net/http%3A%2F%2Fwordpress-604950-1959020.cloudwaysapps.com%2Fwp-content%2Fuploads%2F2021%2F04%2Ftrick-tip-how-to-carve-on-a-snowboard-ridestore-magazine.jpg?ixlib=gatsbySourceUrl-1.6.9&auto=format%2Ccompress&crop=faces%2Centropy&fit=crop&w=689&h=689&s=868b5103de49cfc6e17654a07f04dd4e";
+            }
+            else {$url = "/uploads/".$medias[0]->getFilename();}
+            $trickResume = [
+                "id" => $value->getId(),
+                "name" =>$value->getName(),
+                "slug"=>$value->getSlug(),
+                "media" => $url
+            ];
+            array_push($completedTricks, $trickResume);
+        }
         $allTricksQty = count($this->repository->findAll());
+        // $media = $this->getDoctrine()->getRepository(Media::class)->findAll();
         return $this->render('main/homePage.html.twig', [
             'controller_name' => 'MainController',
             'current_menu' => 'home',
-            'tricks' => $tricks,
-            'allTricksQty' => $allTricksQty
+            'tricks' => $completedTricks,
+            'allTricksQty' => $allTricksQty,
+            // 'medias' => $media
         ]);
     }
 
@@ -74,35 +87,31 @@ class MainController extends AbstractController
     {
         $trick = new Trick;
 
-        // $category =$this->getDoctrine()->getRepository(Category::class)->findAll();
-
         $form = $this->createForm(EditTrickType::class, $trick);
         $form->handleRequest($request);
         if ($form->isSubmitted()  && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
 
             $files = $form->get('media')->getData();
 
+            $trick->setCreatedAt(new \dateTime());
             if ($files) {
                 foreach ($files as $file) {
-                    // $type = $this->defineType();
-                    // $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-                    // $safeFilename = $slugger->slug($originalFilename);
-                    // $newFilename = $safeFilename . '-' . uniqid() . '.' . $media->guessExtension();
-                    // $newMedia = new FileUploader($image, $slugger);
 
                     $newFile = new MediaUploader('uploads', $slugger, $file);
-                    dd($newFile);
-                    $newFile->add($file);
-                    dd($newFile);
+                    $solution = $newFile->add();
                     $media = new Media;
-
-                    // $video->setFilename();
-
+                    $media->setFilename($solution[0]);
+                    $media->setType($solution[1]);
+                    $media->setUploadAt(new DateTime());
+                    $media->setTrick($trick);
+                    $em->persist($media);
                 }
+            } else {
+                $media = new Media;
+                $media->setFilename("https://ridestoremagazine.imgix.net/http%3A%2F%2Fwordpress-604950-1959020.cloudwaysapps.com%2Fwp-content%2Fuploads%2F2021%2F04%2Ftrick-tip-how-to-carve-on-a-snowboard-ridestore-magazine.jpg?ixlib=gatsbySourceUrl-1.6.9&auto=format%2Ccompress&crop=faces%2Centropy&fit=crop&w=689&h=689&s=868b5103de49cfc6e17654a07f04dd4e");
+                $media->setType("default");
             }
-
-            $trick->setCreatedAt(new \dateTime());
-            $em = $this->getDoctrine()->getManager();
             $em->persist($trick);
             $em->flush();
             $this->addFlash('success', 'You added a new trick !');
@@ -133,8 +142,9 @@ class MainController extends AbstractController
     /**
      * @route("/profil/edit/{id}", name="app_trick_edit") 
      */
-    public function editTrick(int $id, Request $request)
+    public function editTrick(int $id, Request $request, SluggerInterface $slugger)
     {
+
         $trick = $this->repository->findOneBy(['id' => $id]);
         $idCategory = $trick->getCategory();
         $category = $this->getDoctrine()->getRepository(Category::class)->findAll();
@@ -142,9 +152,27 @@ class MainController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $trick->setUpdateAt(new \dateTime());
             $em = $this->getDoctrine()->getManager();
+            $files = $form->get('media')->getData();
+            if ($files) {
+                foreach ($files as $file) {
+
+                    $newFile = new MediaUploader('uploads', $slugger, $file);
+                    $solution = $newFile->add();
+                    $media = new Media;
+                    $media->setFilename($solution[0]);
+                    $media->setType($solution[1]);
+                    $media->setUploadAt(new DateTime());
+                    $media->setTrick($trick);
+                    $em->persist($media);
+                }
+            }
+            $media->setUploadAt(new DateTime());
+            $media->setTrick($trick);
+            $em->persist($media);
+
+
+            $trick->setUpdateAt(new \dateTime());
             $em->flush();
             $this->addFlash('success', 'This trick has been updated ');
             return $this->redirectToRoute('app_home');
@@ -164,9 +192,11 @@ class MainController extends AbstractController
     {
         $trick = $this->repository->findOneBy(['slug' => $slug]);
         $slug = $trick->getSlug();
-
+        $medias = $this->getDoctrine()->getRepository(Media::class)->findBy(['trick' => $trick->getId()]);
+        
         return $this->render('main/trick.html.twig', [
-            'trick' => $trick
+            'trick' => $trick,
+            'medias'=>$medias
         ]);
     }
 
@@ -185,11 +215,11 @@ class MainController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $avatarfile = $form->get('avatar')->getData();
-            if($avatarfile){
+            if ($avatarfile) {
                 $originalFilename = pathinfo($avatarfile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$avatarfile->guessExtension();
-               
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $avatarfile->guessExtension();
+
                 try {
                     $avatarfile->move(
                         $this->getParameter('media_directory'),
@@ -201,7 +231,6 @@ class MainController extends AbstractController
                 } catch (FileException $e) {
                     $this->addFlash('error', 'Something went wrong');
                 }
-
             }
             $em = $this->getDoctrine()->getManager();
             $user->setAvatar($newFilename);
@@ -210,6 +239,6 @@ class MainController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('main/editProfil.html.twig', ['user' => $user, 'form'=>$form->createView()]);
+        return $this->render('main/editProfil.html.twig', ['user' => $user, 'form' => $form->createView()]);
     }
 }
