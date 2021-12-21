@@ -13,6 +13,8 @@ class MediaUploader
 
     private $video = ["video/mp4", "video/mpeg"];
     private $image = ["image/gif", "image/jpeg", "image/png",  "image/webp"];
+    private $imageExtensions = ["gif", "jpeg", "png",  "webp"];
+    private $videoExtensions = ["mp4", "mpeg"];
     private $file;
     private $targetDirectory;
     private $slugger;
@@ -25,18 +27,19 @@ class MediaUploader
     }
 
 
-    public function add(UploadedFile $file)
+    public function add()
     {
-        dd($file);
-        $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        
+        $originalFilename = pathinfo($this->file->getClientOriginalName(), PATHINFO_FILENAME);
       
            
             $type = $this->defineType();
             $safeFilename = $this->slugger->slug($originalFilename);
-            $this->file->move($this->targetDirectory, $safeFilename);
-            dd($safeFilename,$type,$file);
+            $fileName = $safeFilename.'-'.uniqid().'.'.$this->file->guessExtension();
+            $this->file->move($this->targetDirectory, $fileName);
+          
 
-            return [$safeFilename, $type];
+            return [$fileName, $type];
 
 
     }
@@ -51,5 +54,12 @@ class MediaUploader
     public function getTargetDirectory()
     {
         return $this->targetDirectory;
+    }
+
+    private function getExtension(){
+        $type = $this->file->getMimeType();
+        $index = array_search($type, $this->video);
+        if ($index) return $this->videoExtensions[$index];
+        return $this->imageExtensions[$index];
     }
 }

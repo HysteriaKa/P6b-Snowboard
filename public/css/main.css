@@ -30,7 +30,7 @@ footer {
   background-size: cover;
   width: 100%;
   min-height: 45vw;
-  background-image: url("https://media.gettyimages.com/photos/snowboarder-jumping-through-air-with-deep-blue-sky-in-background-picture-id1092719712?s=2048x2048");
+  
 }
 
 .jumbotron div {
@@ -113,8 +113,11 @@ footer {
 .fa-trash-alt {
   color: black;
 }
-
-a {
+.image_card{
+  min-width: 250px;
+  min-height: 250px;
+}
+a{
   text-decoration: none;
   color: black;
 }
@@ -210,6 +213,47 @@ nav div a {
 }
 .form-control {
   width: 40%;
+}
+/* trick by trick*/
+main {
+  width: 100%;
+  overflow: hidden;
+}
+
+main > div {
+  width: 100%;
+  filter: blur(16px);
+  /* height: 40rem; */
+  /* object-fit: cover; */
+  position: absolute;
+  z-index: -1;
+}
+section {
+  width: 80%;
+  margin: auto;
+  /* position: relative; */
+  /* margin-top: -30rem; */
+  background-color: white;
+  min-height: calc(100vh - 3rem);
+}
+
+section img {
+  width: 100%;
+  margin-top: 80px;
+}
+.image-trick{
+  height: 80vh;
+}
+.thumbnail{
+  height: 150px;
+  width: 150px;
+}
+.rightUp{
+
+  position: fixed;
+  top:60px;
+  right:170px;
+  color:coral;
 }
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
   .row {
