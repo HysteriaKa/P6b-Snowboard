@@ -167,9 +167,9 @@ class TrickController extends AbstractController
                     $em->persist($media);
                 }
             }
-            $media->setUploadAt(new DateTime());
-            $media->setTrick($trick);
-            $em->persist($media);
+            // $media->setUploadAt(new DateTime());
+            // $media->setTrick($trick);
+            // $em->persist($media);
 
 
             $trick->setUpdateAt(new \dateTime());
@@ -193,10 +193,11 @@ class TrickController extends AbstractController
         $trick = $this->repository->findOneBy(['slug' => $slug]);
         $slug = $trick->getSlug();
         $medias = $this->getDoctrine()->getRepository(Media::class)->findBy(['trick' => $trick->getId()]);
-        
+        $category = $this->getDoctrine()->getRepository(Category::class)->findOneBy(['id'=>$trick->getCategory()]);
         return $this->render('main/trick.html.twig', [
             'trick' => $trick,
-            'medias'=>$medias
+            'medias'=>$medias,
+            'category'=>$category
         ]);
     }
 
