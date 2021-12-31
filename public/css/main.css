@@ -25,14 +25,36 @@ footer {
 .ver-center {
   align-items: center;
 }
+.success {
 
+  background-color: #63eb5e;
+  color: #080808;
+  border: none;
+}
+.error {
+
+  background-color:#e6243e;
+  color: #ffffff;
+  border: none;
+}
+.italic {
+  font-style: italic;
+  opacity: 0.8;
+  
+}
 .jumbotron {
   background-size: cover;
   width: 100%;
   min-height: 45vw;
   
 }
+.avatar{
 
+  width:70px;
+  height: 70px;
+  border-radius: 50%;
+
+}
 .jumbotron div {
   color: #fff;
   width: 100%;
@@ -214,6 +236,10 @@ nav div a {
 .form-control {
   width: 40%;
 }
+.w70{
+
+  width: 70%;
+}
 /* trick by trick*/
 main {
   width: 100%;
@@ -286,7 +312,16 @@ hero > a {
 hero form {
   grid-area: supprimer;
 }
+.spacer {
 
+  border-top: 1px solid coral;
+  content:'';
+  background-color: coral;
+  width: 70%;
+  margin: 0;
+  height: 2px;
+
+}
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
   .row {
     flex-direction: column;

@@ -19,6 +19,19 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
+
+    public function showComments($qty)
+    {
+        return $this->createQueryBuilder('t')
+            
+            ->orderBy('t.id', 'DESC')
+            ->setMaxResults($qty)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
     // /**
     //  * @return Comment[] Returns an array of Comment objects
     //  */
