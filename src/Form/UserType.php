@@ -30,7 +30,7 @@ class UserType extends AbstractType
                     ])
                 ]
             ])
-            ->add("Submit", SubmitType::class, ['attr' => ['class' => 'btn-dark']]);;
+            ->add("Submit", SubmitType::class, ['attr' => ['class' => 'btn-dark']]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -38,7 +38,7 @@
         </div>
         
         <div class="mediaContainer mat-2">   
-            {% for media in medias %}
+            {% for media in medias %} 
                 <a href="{{ asset('/uploads/' ~ media.filename)}}" class="thumbnail">
                     {% if media.type == "image" %}
                     <img src="{{ asset('/uploads/' ~ media.filename)}}" alt="Image 1"class="thumbnail" />
