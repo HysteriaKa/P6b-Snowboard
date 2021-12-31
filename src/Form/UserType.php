@@ -24,7 +24,7 @@ class UserType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Image([
-                        'maxSize' => '2M',
+                        'maxSize' => '5M',
                  
                         'mimeTypesMessage' => 'Please upload a valid format image',
                     ])

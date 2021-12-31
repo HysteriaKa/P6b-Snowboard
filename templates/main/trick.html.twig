@@ -14,41 +14,44 @@
         style="background-image: url('https://media.gettyimages.com/photos/snowboarder-jumping-through-air-with-deep-blue-sky-in-background-picture-id1092719712?s=2048x2048');">
         <h1 class="center">{{ trick.name }}</h1>
     </div>
-{% endif %}
+    {% endif %}
+    {% for message in app.flashes('success')%}
+    <div class="success">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('error')%}
+    <div class="error">{{ message }}</div>
+    {% endfor %}
     <section>
         <div>
             {% if medias %}
-            <hero 
-                {% if medias[0].type == "image" %}
-                style="background-image:url({{ asset('/uploads/' ~ medias[0].filename)}})"
-                {% endif %}
-            >
+            <hero {% if medias[0].type == "image" %}
+                style="background-image:url({{ asset('/uploads/' ~ medias[0].filename)}})" {% endif %}>
                 {% if app.user and app.user.isVerified %}
-                    <a href="/profil/edit/{{trick.id}}"><i class="fas fa-pencil-alt mar-2"></i></a>
-                    
-                    <form method="post" action="{{ path('app_trick_delete', {'id': trick.id}) }}"
-                        onsubmit="return confirm('Are you sure you want to delete this amazing trick?');">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">
-                        <button class="fas"><i class="fas fa-trash-alt mr-2"></i></button>
-                    </form>
+                <a href="/profil/edit/{{trick.id}}"><i class="fas fa-pencil-alt mar-2"></i></a>
+
+                <form method="post" action="{{ path('app_trick_delete', {'id': trick.id}) }}"
+                    onsubmit="return confirm('Are you sure you want to delete this amazing trick?');">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">
+                    <button class="fas"><i class="fas fa-trash-alt mr-2"></i></button>
+                </form>
                 {% endif %}
             </hero>
             {% endif %}
         </div>
-        
-        <div class="mediaContainer mat-2">   
-            {% for media in medias %} 
-                <a href="{{ asset('/uploads/' ~ media.filename)}}" class="thumbnail">
-                    {% if media.type == "image" %}
-                    <img src="{{ asset('/uploads/' ~ media.filename)}}" alt="Image 1"class="thumbnail" />
-                    {% else %}
-                    <video class="thumbnail">
-                        <source src="{{ asset('/uploads/' ~ media.filename)}}" />
-                    </video>
-                    {% endif %}
-                </a>
-            
+
+        <div class="mediaContainer mat-2">
+            {% for media in medias %}
+            <a href="{{ asset('/uploads/' ~ media.filename)}}" class="thumbnail">
+                {% if media.type == "image" %}
+                <img src="{{ asset('/uploads/' ~ media.filename)}}" alt="Image 1" class="thumbnail" />
+                {% else %}
+                <video class="thumbnail">
+                    <source src="{{ asset('/uploads/' ~ media.filename)}}" />
+                </video>
+                {% endif %}
+            </a>
+
             {% endfor %}
         </div>
         <p class="center mat-2">{{ trick.description }}</p>
@@ -57,8 +60,47 @@
             <p>Crée le : {{ trick.createdAt|date('d.m.Y') }}</p>
             {% if trick.updateAt %}
             <p>modifier le : {{ trick.updateAt|date('d.m.Y')}}</p>
-     {% endif %}
+            {% endif %}
         </div>
+        {% if app.user %}
+        <div class="spacer mat-2 mab-2"></div>
+        <div class="mab-2 center" id="addComment">
+            {{form_start(form)}}
+            {{form_widget(form.content)}}
+            {{form_widget(form.submit)}}
+            {{form_end(form)}}
+        </div>
+        {% endif %}
+        <div class="spacer mat-2 mab-2 center"></div>
+        <h2 class="center">Comments</h2>
+        {% for comment in trick.comments %}
+            {% if comment.parent == null %}
+            <img src="{{ asset('/uploads/' ~ user.avatar)}}" alt="avatar" id="avatar" class="avatar">
+            <p><span class="italic">{{ comment.user.username }} </span>said :{{comment.content|raw}}</p>
+            {{ comment.createdAt|date('d.m.Y')}}
+            
+            <p><a href="#addComment" data-reply data-id="{{comment.id}}" class="btn btn-dark">Reply</a></p>
+                {% for reply in comment.reply %}
+                <p>Replied by</p>
+                <img src="{{ asset('/uploads/' ~ user.avatar)}}" alt="avatar" id="avatar" class="avatar">
+                <p class="italic">{{ reply.user.username }}</p>
+                <p>{{ reply.createdAt|date('d.m.Y')}}</p>
+                <p>{{reply.content|raw}}</p>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
     </section>
 </main>
+{% block javascripts %}
+<script>
+    window.onload = () => {
+
+        document.querySelectorAll("[data-reply]").forEach(element => {
+            element.addEventListener("click", function () {
+                document.querySelector("#comment_parentid").value = this.dataset.id;
+            })
+        })
+    }
+</script>
+{% endblock %}
 {% endblock %}
