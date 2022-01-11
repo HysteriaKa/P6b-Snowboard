@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Trick;
 use App\Entity\Comment;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Comment|null find($id, $lockMode = null, $lockVersion = null)
@@ -20,11 +21,12 @@ class CommentRepository extends ServiceEntityRepository
     }
 
 
-    public function showComments($qty)
+    public function showComments($qty, Trick $trick)
     {
         return $this->createQueryBuilder('t')
-            
-            ->orderBy('t.id', 'DESC')
+            ->Where('t.trick= :trick')
+            ->setParameter('trick', $trick)
+            ->orderBy('t.created_at', 'ASC')
             ->setMaxResults($qty)
             ->getQuery()
             ->getResult();

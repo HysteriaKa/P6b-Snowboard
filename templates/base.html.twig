@@ -36,7 +36,7 @@
                             <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_tricks')}}">Tricks</a>
+                            <a class="nav-link" href="{{path('app_home')}}#bloctricks">Tricks</a>
                         </li>
                         {% if app.user %}
                  
@@ -63,7 +63,7 @@
         <nav class="navbar fixed-bottom navbar-light bg-light">
             <div class="container-fluid">
                 <a href="{{ path('app_home') }}"><i class="fa fa-fw fa-home"></i></a>
-                <a href="{{ path('app_tricks')}}"><i class="fas fa-bookmark"></i></a>
+                <a href="{{path('app_home')}}#bloctricks"><i class="fas fa-bookmark"></i></a>
                 {% if app.user %}
                 <a href="{{ path('app_logout') }}"><i class="fa fas fa-sign-out-alt"></i></a>
                 {% else %}
@@ -74,7 +74,7 @@
         </nav>
     </div>
     {% for message in app.flashes('success')%}
-    <div class="error center">{{ message }}</div>
+    <div class="success center">{{ message }}</div>
     {% endfor %}
     {% for message in app.flashes('error')%}
     <div class="error center">{{ message }}</div>

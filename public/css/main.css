@@ -322,6 +322,50 @@ hero form {
   height: 2px;
 
 }
+
+hr {
+  width: 80%;
+  margin: 1rem auto;
+  border-top: 2px solid coral;
+}
+
+section#comments article {
+  display: grid;
+  grid-template-areas:
+    "image name content ."
+    ". . content ."
+    ". . content reply"
+    ". . date reply";
+  grid-template-columns: 5rem 5rem auto 5rem;
+  grid-column-gap: .5rem;
+}
+section#comments article.replied {
+  width: 95%;
+  margin-left:5%;
+}
+
+section#comments article img{
+  grid-area : image
+}
+
+section#comments article .username{
+  grid-area : name;
+}
+
+section#comments article .content{
+  grid-area : content;
+  background-color: hsl(16deg 100% 95%);
+}
+
+section#comments article .date{
+  grid-area : date;
+  text-align: right;
+}
+
+section#comments article a{
+  grid-area : reply;
+}
+
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
   .row {
     flex-direction: column;
