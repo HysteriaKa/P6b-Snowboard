@@ -6,14 +6,13 @@ use DateTime;
 use App\Entity\User;
 use App\Entity\Media;
 use App\Entity\Trick;
-use App\Form\UserType;
 use App\Entity\Comment;
 use App\Entity\Category;
 use App\Form\CommentType;
 use App\Form\EditTrickType;
-use App\Services\DocUploader;
 use App\Services\MediaUploader;
 use App\Repository\TrickRepository;
+use App\Repository\CommentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,6 +41,7 @@ class TrickController extends AbstractController
         }
         $incrementTricks = 15;
         $start = $request->query->get('showTricks');
+
         if ($start === NULL) $start = 0;
         else $start = intval($start);
         $completedTricks = [];
@@ -69,17 +69,6 @@ class TrickController extends AbstractController
             'tricks' => $completedTricks,
             'allTricksQty' => $allTricksQty,
             // 'medias' => $media
-        ]);
-    }
-
-    /**
-     * @route("/tricks", name="app_tricks") 
-     */
-    public function allTrick()
-    {
-        $tricks = $this->repository->findAll();
-        return $this->render('main/allTricks.html.twig', [
-            'tricks' => $tricks
         ]);
     }
 
@@ -119,6 +108,9 @@ class TrickController extends AbstractController
             $em->flush();
             $this->addFlash('success', 'You added a new trick !');
             return $this->redirectToRoute('app_home');
+        } elseif ($form->isSubmitted()  && !$form->isValid()) {
+            $this->addFlash('error', 'There has been an issue ! Check if that trick is not already listed !');
+            $this->redirectToRoute('app_add_trick');
         }
 
         return $this->render('main/addTrick.html.twig', [
@@ -149,7 +141,6 @@ class TrickController extends AbstractController
     {
 
         $trick = $this->repository->findOneBy(['id' => $id]);
-        $idCategory = $trick->getCategory();
         $category = $this->getDoctrine()->getRepository(Category::class)->findAll();
         $form = $this->createForm(EditTrickType::class, $trick);
         $form->handleRequest($request);
@@ -170,10 +161,6 @@ class TrickController extends AbstractController
                     $em->persist($media);
                 }
             }
-            // $media->setUploadAt(new DateTime());
-            // $media->setTrick($trick);
-            // $em->persist($media);
-
 
             $trick->setUpdateAt(new \dateTime());
             $em->flush();
@@ -198,7 +185,14 @@ class TrickController extends AbstractController
         $medias = $this->getDoctrine()->getRepository(Media::class)->findBy(['trick' => $trick->getId()]);
         $category = $this->getDoctrine()->getRepository(Category::class)->findOneBy(['id' => $trick->getCategory()]);
         $user = $this->getUser();
+
         //Comments
+        $incrementComments = 4;
+        $start = $request->query->get('showComments');
+        if ($start === NULL) $start = 0;
+        else $start = intval($start);
+        $comments = $this->getDoctrine()->getRepository(Comment::class)->showComments(($start + $incrementComments), $trick);
+
         //create comment
         $comment = new Comment;
         //make form
@@ -208,67 +202,30 @@ class TrickController extends AbstractController
             $comment->setCreatedAt(new DateTime());
             $comment->setTrick($trick);
             $comment->setUser($user);
-            $parentid =$form->get("parentid")->getData();
+            $parentid = $form->get("parentid")->getData();
             //récupérer commentaire correspondant
-           
-            $em=$this->getDoctrine()->getManager();
-            $parent= $em->getRepository(Comment::class)->find($parentid);
-            $comment->setParent($parent);
+            $em = $this->getDoctrine()->getManager();
+            if ($parentid !== NULL) {
+                $parent = $em->getRepository(Comment::class)->find($parentid);
+                $comment->setParent($parent);
+            }
+
             $em->persist($comment);
             $em->flush();
-            $this->addFlash('success','Your comment is now below');
-            return $this->redirectToRoute('app_trick',['slug'=>$trick->getSlug()]);
-
+            $this->addFlash('success', 'Your comment is now below');
+            return $this->redirectToRoute('app_trick', ['slug' => $trick->getSlug()]);
         }
+        $allCommentsQty = count($this->getDoctrine()->getRepository(Comment::class)->findBy(['trick' => $trick]));
 
         return $this->render('main/trick.html.twig', [
             'trick' => $trick,
             'medias' => $medias,
             'category' => $category,
             'user' => $user,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'comments' => $comments,
+            'nextComments' => $start + $incrementComments,
+            'allCommentsQty' => $allCommentsQty
         ]);
-    }
-
-    /**
-     * @route("profil/editProfil/{id}",name="app_editProfil")
-     */
-    public function editProfil(Request $request, int $id, SluggerInterface $slugger)
-    {
-
-        $id = $id;
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findOneBy(['id' => $id]);
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $avatarfile = $form->get('avatar')->getData();
-            if ($avatarfile) {
-                $originalFilename = pathinfo($avatarfile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $avatarfile->guessExtension();
-
-                try {
-                    $avatarfile->move(
-                        $this->getParameter('media_directory'),
-                        $newFilename
-                    );
-                    $em = $this->getDoctrine()->getManager();
-                    $user->setAvatar($newFilename);
-                    $em->flush();
-                } catch (FileException $e) {
-                    $this->addFlash('error', 'Something went wrong');
-                }
-            }
-            $em = $this->getDoctrine()->getManager();
-            $user->setAvatar($newFilename);
-            $em->flush();
-            $this->addFlash('success', 'You did great !');
-            return $this->redirectToRoute('app_home');
-        }
-
-        return $this->render('main/editProfil.html.twig', ['user' => $user, 'form' => $form->createView()]);
     }
 }

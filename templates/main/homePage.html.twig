@@ -16,6 +16,11 @@
 <div class="error">{{ message }}</div>
 {% endfor %}
 <h1 class="center mat-2">Some Tricks</h1>
+{% if app.user and app.user.isVerified %}
+<div class="center">
+    <a href="{{ path('app_add_trick')}}" class=" btn btn-dark">Add a Trick !</a>
+</div>
+{% endif %}
 <div class="mal-1 mat-2 tricksContainer" id="bloctricks">
     <div class="container">
         <div class="row row-cols-5 align-items-start justify-content-center">
@@ -24,7 +29,6 @@
             <div class="col mab-1">
                 <div class="card" style="width: 16rem;" id="trick{{nbTricks}}">
                     
-                   
                       <img src="{{ trick.media }}"
                       class="card-img-top image_card" alt="..."> 
 
@@ -48,10 +52,6 @@
             {% endfor %}
         </div>
     </div>
-
-    {#{% if nbAllTricks > nbTricks %}
-    <a href="#up"><i class="fas fa-arrow-up"></i></a>
-    {% endif %}#}
 </div>
 {% if allTricksQty > nbTricks %}
 <div class="center">

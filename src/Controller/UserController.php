@@ -22,37 +22,43 @@ class UserController extends AbstractController
     {
 
         $id = $id;
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findOneBy(['id' => $id]);
+        $user = $this->getUser();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-       
-        if ($form->isSubmitted() && $form->isValid()) {
-            $avatarfile = $form->get('avatar')->getData();
-            dd($avatarfile);
-            if ($avatarfile) {
-                $originalFilename = pathinfo($avatarfile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $avatarfile->guessExtension();
-
-                try {
-                    $avatarfile->move(
-                        $this->getParameter('media_directory'),
-                        $newFilename
-                    );
+    
+        if ($form->isSubmitted()) {
+            try {
+                if ( $form->isValid()) {
+                    $avatarfile = $form->get('avatar')->getData();
+           
+                    if ($avatarfile) {
+                        $originalFilename = pathinfo($avatarfile->getClientOriginalName(), PATHINFO_FILENAME);
+                        $safeFilename = $slugger->slug($originalFilename);
+                        $newFilename = $safeFilename . '-' . uniqid() . '.' . $avatarfile->guessExtension();
+        
+                        try {
+                            $avatarfile->move(
+                                $this->getParameter('media_directory'),
+                                $newFilename
+                            );
+                            $em = $this->getDoctrine()->getManager();
+                            $user->setAvatar($newFilename);
+                            $em->flush();
+                        } catch (FileException $e) {
+                            $this->addFlash('error', 'Something went wrong');
+                        }
+                    }
                     $em = $this->getDoctrine()->getManager();
                     $user->setAvatar($newFilename);
                     $em->flush();
-                } catch (FileException $e) {
-                    $this->addFlash('error', 'Something went wrong');
+                    $this->addFlash('success', 'You did great !');
+                    return $this->redirectToRoute('app_home');  
                 }
+            } catch (\Throwable $th) {
+                // throw $th;
+                dd($th);
             }
-            $em = $this->getDoctrine()->getManager();
-            $user->setAvatar($newFilename);
-            $em->flush();
-            $this->addFlash('success', 'You did great !');
-            return $this->redirectToRoute('app_home');
+ 
         }
 
         return $this->render('main/editProfil.html.twig', ['user' => $user, 'form' => $form->createView()]);

@@ -36,6 +36,7 @@
                     <button class="fas"><i class="fas fa-trash-alt mr-2"></i></button>
                 </form>
                 {% endif %}
+
             </hero>
             {% endif %}
         </div>
@@ -51,8 +52,12 @@
                 </video>
                 {% endif %}
             </a>
-
             {% endfor %}
+            {% if trick.videoLink %}
+            <iframe width="350" height="215" src="{{trick.videoLink}}" title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            {% endif %}
         </div>
         <p class="center mat-2">{{ trick.description }}</p>
         <div class="mediaContainer">
@@ -63,7 +68,7 @@
             {% endif %}
         </div>
         {% if app.user %}
-        <div class="spacer mat-2 mab-2"></div>
+        <hr>
         <div class="mab-2 center" id="addComment">
             {{form_start(form)}}
             {{form_widget(form.content)}}
@@ -71,24 +76,37 @@
             {{form_end(form)}}
         </div>
         {% endif %}
-        <div class="spacer mat-2 mab-2 center"></div>
+    </section>
+    <hr>
+    <section id="comments">
         <h2 class="center">Comments</h2>
-        {% for comment in trick.comments %}
-            {% if comment.parent == null %}
-            <img src="{{ asset('/uploads/' ~ user.avatar)}}" alt="avatar" id="avatar" class="avatar">
-            <p><span class="italic">{{ comment.user.username }} </span>said :{{comment.content|raw}}</p>
-            {{ comment.createdAt|date('d.m.Y')}}
-            
-            <p><a href="#addComment" data-reply data-id="{{comment.id}}" class="btn btn-dark">Reply</a></p>
-                {% for reply in comment.reply %}
-                <p>Replied by</p>
-                <img src="{{ asset('/uploads/' ~ user.avatar)}}" alt="avatar" id="avatar" class="avatar">
-                <p class="italic">{{ reply.user.username }}</p>
-                <p>{{ reply.createdAt|date('d.m.Y')}}</p>
-                <p>{{reply.content|raw}}</p>
-                {% endfor %}
-            {% endif %}
+        {% set nbComments = 0 %}
+        {% for comment in comments %}
+        {% if comment.parent == null %}
+        <article id="comment{{nbComments}}">
+            <img src="{{ asset('/uploads/' ~ comment.user.avatar)}}" alt="avatar" id="avatar" class="avatar">
+            <span class="italic username">{{ comment.user.username }} said :</span>
+            <span class="content">{{comment.content|raw}}</span>
+            <span class="date">{{ comment.createdAt|date('d.m.Y')}}</span>
+            <a href="#addComment" data-reply data-id="{{comment.id}}" class="btn btn-dark">Reply</a>
+
+        </article>
+        {% for reply in comment.reply %}
+        <article class="replied">
+            <img src="{{ asset('/uploads/' ~ reply.user.avatar)}}" alt="avatar" id="avatar" class="avatar">
+            <span class="italic username">{{ reply.user.username }} replied : </span>
+            <span class="content">{{reply.content|raw}}</span>
+            <span class="date">{{ reply.createdAt|date('d.m.Y')}}</span>
+        </article>
         {% endfor %}
+        {% endif %}
+        {% set nbComments = nbComments + 1 %}
+        {% endfor %}
+        {% if allCommentsQty > nbComments %}
+        <div class="center">
+            <a href="?showComments={{nbComments}}#comment{{nbComments}}" class="btn btn-dark">Load more</a>
+        </div>
+        {% endif %}
     </section>
 </main>
 {% block javascripts %}

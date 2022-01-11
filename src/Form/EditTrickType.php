@@ -28,6 +28,9 @@ class EditTrickType extends AbstractType
                 'mapped' => false,
                 'required'=>false
             ])
+            ->add('videoLink', TextType::class, ['attr' => ['class' => 'form-control'],
+            'label'=>'Have a video link you want to share ?',
+            'required'=>false])
             ->add("Submit", SubmitType::class, ['attr' => ['class' => 'btn-dark']]);
     }
 

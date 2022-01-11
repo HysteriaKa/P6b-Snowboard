@@ -64,6 +64,11 @@ class Trick
      */
     private $comments;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $videoLink;
+
     public function __construct()
     {
         $this->media = new ArrayCollection();
@@ -203,6 +208,18 @@ class Trick
                 $comment->setTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getVideoLink(): ?string
+    {
+        return $this->videoLink;
+    }
+
+    public function setVideoLink(?string $videoLink): self
+    {
+        $this->videoLink = $videoLink;
 
         return $this;
     }
