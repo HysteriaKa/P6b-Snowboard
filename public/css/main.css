@@ -1,11 +1,9 @@
 @import "~bootstrap/scss/bootstrap";
 h1 {
-
   text-transform: uppercase;
 }
 
 input {
-
   padding: 1rem;
   font-size: large;
   border-right: none;
@@ -14,55 +12,45 @@ input {
   border-left: none;
 }
 footer {
-
   bottom: 20px;
   position: fixed;
   right: 50px;
   left: 50px;
 }
 .center {
-
   justify-content: center;
   text-align: center;
   align-items: center;
 }
 .ver-center {
-
   align-items: center;
 }
 .success {
-
   background-color: #63eb5e;
   color: #080808;
   border: none;
 }
 .error {
-
   background-color: #e6243e;
   color: #fff;
   border: none;
 }
 .italic {
-
   font-style: italic;
   opacity: 0.8;
 }
 .jumbotron {
-
   background-size: cover;
   width: 100%;
   min-height: 45vw;
 }
 .avatar {
-
   width: 70px;
   height: 70px;
   border-radius: 50%;
 }
 
-
 .jumbotron div h2 {
-
   -webkit-animation-name: pulse;
   animation-name: pulse;
   -webkit-animation-duration: 1s;
@@ -74,54 +62,43 @@ footer {
 }
 
 .jumbotron h1 {
-
   font-size: 50px;
   margin-bottom: 0;
 }
 
 .jumbotron p {
-
   font-size: 25px;
   font-weight: bold;
   margin-bottom: 0;
 }
 .d-flex {
-
   display: flex;
   flex-direction: column;
 }
 .bg-purple {
-
   background-color: purple;
 }
 .column {
-
   flex-direction: column;
 }
 .row {
-
   flex-direction: row !important;
 }
 .start {
-
   text-align: initial !important;
 }
 .justif-space-around {
-
   justify-content: space-around;
 }
 .justif-space-between {
-
   justify-content: space-between;
 }
 .logoNav {
-
   width: 85px;
   height: 60px;
 }
 #inputPassword,
 #inputEmail {
-
   padding: 1rem;
   font-size: large;
   border-right: none;
@@ -131,7 +108,6 @@ footer {
   width: 30%;
 }
 .fa-arrow-down {
-
   bottom: 119px;
   right: 46px;
   color: black;
@@ -139,7 +115,6 @@ footer {
   font-size: 40px;
 }
 .fa-arrow-up {
-
   bottom: 45px;
   right: 46px;
   color: black;
@@ -151,23 +126,19 @@ footer {
   color: black;
 }
 .image_card {
-
   min-width: 250px;
   min-height: 250px;
 }
 a {
-
   text-decoration: none;
   color: black;
 }
 
 button {
-
   border: none;
   background: #ffffffff;
 }
 nav {
-
   display: flex;
   height: 10vh;
   width: 100%;
@@ -175,14 +146,12 @@ nav {
   background: #fff;
 }
 nav div a {
-
   text-decoration: none;
   margin: 1rem;
 }
 
 /*mobile navbar*/
 .mobile {
-
   position: fixed;
   bottom: 0;
   left: 0;
@@ -199,61 +168,48 @@ nav div a {
 
 /* margin et padding*/
 .mab-1 {
-
   margin-bottom: 1rem;
 }
 .mab-2 {
-
   margin-bottom: 2rem !important;
 }
 .mat-1 {
-
   margin-top: 1rem;
 }
 .mat-2 {
-
   margin-top: 2rem;
 }
 .mat-3 {
-
   margin-top: 3rem;
 }
 .mar-1 {
-
   margin-right: 1rem;
 }
 .mar-2 {
-
   margin-right: 2rem;
 }
 .mal-1 {
-
   margin-left: 1rem;
 }
 .mal-2 {
-
   margin-left: 2rem;
 }
 .mal-3 {
-
   margin-left: 3rem;
 }
 /* disparition de la flèche*/
 .return180 {
-
   transform: rotate(180deg);
   opacity: 1;
   transition: 1s;
 }
 
 .return0 {
-
   opacity: 0;
   transition: 1s;
 }
 /* buttons*/
 .btn {
-
   cursor: pointer;
   padding: 10px;
   border: none;
@@ -261,31 +217,27 @@ nav div a {
   text-decoration: none;
 }
 .wrapper {
-
   display: grid;
   grid-template-columns: 2fr 2fr 2fr 2fr 2fr;
 }
 .card-body {
-
   display: flex !important;
 }
 .form-control {
-
   width: 40%;
 }
-.w70 {
 
+.w70 {
   width: 70%;
 }
+
 /* trick by trick*/
 main {
-
   width: 100%;
   overflow: hidden;
 }
 
 main > div {
-
   width: 100%;
   filter: blur(16px);
   /* height: 40rem; */
@@ -294,12 +246,11 @@ main > div {
   z-index: -1;
 }
 .jumbotron div {
-
   color: #fff;
   width: 100%;
 }
-section {
 
+section {
   width: 80%;
   margin: auto;
   /* position: relative; */
@@ -309,36 +260,34 @@ section {
 }
 
 section img {
-
   width: 100%;
   /* margin-top: 80px; */
 }
-.image-trick {
 
+.image-trick {
   height: 80vh;
 }
-.thumbnail {
 
+.thumbnail {
   height: 150px;
   width: 150px;
 }
 
 .mediaContainer {
-
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
 }
-button {
 
+button {
   background: none;
 }
-i {
 
+i {
   color: coral !important;
 }
-hero {
 
+hero {
   background-color: grey;
   display: grid;
   width: 100%;
@@ -350,16 +299,13 @@ hero {
 }
 
 hero > a {
-
   grid-area: editer;
 }
 
 hero form {
-
   grid-area: supprimer;
 }
 .spacer {
-
   border-top: 1px solid coral;
   content: "";
   background-color: coral;
@@ -369,14 +315,12 @@ hero form {
 }
 
 hr {
-
   width: 80%;
   margin: 1rem auto;
   border-top: 2px solid coral;
 }
 
 section#comments article {
-
   display: grid;
   grid-template-areas:
     "image name content ."
@@ -387,40 +331,33 @@ section#comments article {
   grid-column-gap: 0.5rem;
 }
 section#comments article.replied {
-
   width: 95%;
   margin-left: 5%;
 }
 
 section#comments article img {
-
   grid-area: image;
 }
 
 section#comments article .username {
-
   grid-area: name;
 }
 
 section#comments article .content {
-
   grid-area: content;
   background-color: hsl(16deg 100% 95%);
 }
 
 section#comments article .date {
-
   grid-area: date;
   text-align: right;
 }
 
 section#comments article a {
-
   grid-area: reply;
 }
 
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
-
   #inputPassword,
   #inputEmail {
     width: 60%;
@@ -435,7 +372,6 @@ section#comments article a {
   }
 }
 @media (min-width: 600px) and (max-width: 1024px) {
-  
   #inputPassword,
   #inputEmail {
     width: 60%;

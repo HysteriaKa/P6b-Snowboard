@@ -56,10 +56,4 @@ class MediaUploader
         return $this->targetDirectory;
     }
 
-    private function getExtension(){
-        $type = $this->file->getMimeType();
-        $index = array_search($type, $this->video);
-        if ($index) return $this->videoExtensions[$index];
-        return $this->imageExtensions[$index];
-    }
 }
