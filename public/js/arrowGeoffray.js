@@ -1,5 +1,5 @@
-const arrow = document.querySelector('#arrow');
-const element_to_change = document.querySelectorAll('.tricksContainer');
+const arrow = document.querySelector("#arrow");
+const element_to_change = document.querySelectorAll(".tricksContainer");
 let arrayOfChange = [];
 
 function isInViewport(el) {
@@ -13,19 +13,19 @@ function isInViewport(el) {
 }
 
 element_to_change.forEach(element => {
-    document.addEventListener('scroll',()=>{
+    document.addEventListener("scroll",()=>{
         arrayOfChange = [];
         arrayOfChange.push(isInViewport(element));
     });
 });
 
-document.addEventListener('scroll',()=>{
+document.addEventListener("scroll",()=>{
     if(arrayOfChange.every(v=>v===true)){
         console.log(arrayOfChange.includes(true));
-        arrow.classList.add('return0');
-        arrow.classList.remove('return180');
+        arrow.classList.add("return0");
+        arrow.classList.remove("return180");
     }else{
-        arrow.classList.add('return180');
-        arrow.classList.remove('return0');
+        arrow.classList.add("return180");
+        arrow.classList.remove("return0");
     }
 });
