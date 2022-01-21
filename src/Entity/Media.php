@@ -38,6 +38,11 @@ class Media
      */
     private $trick;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $onTop;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +92,18 @@ class Media
     public function setTrick(?Trick $trick): self
     {
         $this->trick = $trick;
+
+        return $this;
+    }
+
+    public function getOnTop(): ?bool
+    {
+        return $this->onTop;
+    }
+
+    public function setOnTop(bool $onTop): self
+    {
+        $this->onTop = $onTop;
 
         return $this;
     }

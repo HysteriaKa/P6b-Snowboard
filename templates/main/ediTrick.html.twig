@@ -4,12 +4,12 @@
 
 {% block body %}
 
-   
-    <h1 class="center mab-2 mat-2">Edit {{ trick.name }}</h1>
+
+<h1 class="center mab-2 mat-2">Edit {{ trick.name }}</h1>
 <div class="center">{{ form_start(form) }}
     <div class="center d-flex column mab-2 mat-1">
-    {{ form_label(form.name) }}
-    {{ form_widget(form.name) }}
+        {{ form_label(form.name) }}
+        {{ form_widget(form.name) }}
     </div>
     <div class="center d-flex column mab-2 mat-1">
         {{ form_label(form.description) }}
@@ -27,7 +27,18 @@
         {{ form_label(form.videoLink) }}
         {{ form_widget(form.videoLink) }}
     </div>
-    {{ form_end(form) }}
+    {{ form_widget(form.media) }}
+    <div>
+        {{ form_widget(form.Save) }}
+    <form method="post" action="{{ path('app_trick_delete', {'id': trick.id}) }}"
+    onsubmit="return confirm('Are you sure you want to delete this amazing trick?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">
+    <button class="btn-danger">Delete</button>
+</form>
 </div>
-       
+    {{ form_end(form) }}
+
+
+</div>
 {% endblock %}

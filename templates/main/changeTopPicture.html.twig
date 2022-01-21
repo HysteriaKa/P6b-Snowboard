@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Change Top picture {{ trick.name }}!{% endblock %}
+
+{% block body %}
+<h1 class="center">Change top picture</h1>
+<h2 class="center">Pick the picture you wanna see on top !</h2>
+<div class="mediaContainer mat-2">
+    {{ form_start(form)}}
+    {% for media in medias %}
+    {% if media.type == "image" %}
+        <img src="{{ asset('/uploads/' ~ media.filename)}}" alt="Image 1" class="thumbnail" />
+        {{ form_widget(form.onTop)}}
+        
+        {% endif %}
+    {% endfor %}
+    {{ form_end(form)}}
+</div>
+
+
+
+{% endblock %}

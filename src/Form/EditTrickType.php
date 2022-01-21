@@ -31,7 +31,7 @@ class EditTrickType extends AbstractType
             ->add('videoLink', TextType::class, ['attr' => ['class' => 'form-control'],
             'label'=>'Have a video link you want to share ?',
             'required'=>false])
-            ->add("Submit", SubmitType::class, ['attr' => ['class' => 'btn-dark']]);
+            ->add("Save", SubmitType::class, ['attr' => ['class' => 'btn-dark mat-2']]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
