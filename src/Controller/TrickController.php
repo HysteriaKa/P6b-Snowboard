@@ -10,6 +10,7 @@ use App\Entity\Comment;
 use App\Entity\Category;
 use App\Form\CommentType;
 use App\Form\EditTrickType;
+use App\Form\TopPictureType;
 use App\Services\MediaUploader;
 use App\Repository\TrickRepository;
 use App\Repository\CommentRepository;
@@ -89,7 +90,7 @@ class TrickController extends AbstractController
             $trick->setCreatedAt(new \dateTime());
             if ($files) {
                 foreach ($files as $file) {
-
+                    //TODO comment set Ontop a true sur un media ?
                     $newFile = new MediaUploader('uploads', $slugger, $file);
                     $solution = $newFile->add();
                     $media = new Media;
@@ -97,12 +98,14 @@ class TrickController extends AbstractController
                     $media->setType($solution[1]);
                     $media->setUploadAt(new DateTime());
                     $media->setTrick($trick);
+                    $media->setOnTop(false);
                     $em->persist($media);
                 }
             } else {
                 $media = new Media;
                 $media->setFilename("https://ridestoremagazine.imgix.net/http%3A%2F%2Fwordpress-604950-1959020.cloudwaysapps.com%2Fwp-content%2Fuploads%2F2021%2F04%2Ftrick-tip-how-to-carve-on-a-snowboard-ridestore-magazine.jpg?ixlib=gatsbySourceUrl-1.6.9&auto=format%2Ccompress&crop=faces%2Centropy&fit=crop&w=689&h=689&s=868b5103de49cfc6e17654a07f04dd4e");
                 $media->setType("default");
+                $media->setOnTop(true);
             }
             $em->persist($trick);
             $em->flush();
@@ -144,7 +147,7 @@ class TrickController extends AbstractController
         $category = $this->getDoctrine()->getRepository(Category::class)->findAll();
         $form = $this->createForm(EditTrickType::class, $trick);
         $form->handleRequest($request);
-
+        $medias = $this->getDoctrine()->getRepository(Media::class)->findBy(['trick' => $trick->getId()]);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $files = $form->get('media')->getData();
@@ -171,7 +174,8 @@ class TrickController extends AbstractController
         return $this->render('main/ediTrick.html.twig', [
             'trick' => $trick,
             'form' => $form->createView(),
-            'category' => $category
+            'category' => $category,
+            'medias' => $medias
         ]);
     }
 
@@ -227,5 +231,59 @@ class TrickController extends AbstractController
             'nextComments' => $start + $incrementComments,
             'allCommentsQty' => $allCommentsQty
         ]);
+    }
+    /**
+     * @route("/profil/media/{id}", name="app_onTop") 
+     */
+    public function changeOnTop(int $id, Request $request)
+    {
+        $trick = $this->repository->findOneBy(['id' => $id]);
+        $medias = $this->getDoctrine()->getRepository(Media::class)->findBy(['trick' => $trick->getId()]);
+        $form = $this->createForm(TopPictureType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+        }
+
+        return $this->render('main/changeTopPicture.html.twig', [
+            'form' => $form->createView(),
+            'trick' => $trick, 'medias' => $medias
+        ]);
+    }
+    /**
+     * @Route("/profil/deleteTopPicture/{id}", name="app_delete_top")
+     */
+    public function deletePicture(Request $request, int $id): Response
+    {
+        $media = $this->getDoctrine()->getRepository(Media::class)->findOneBy(['id' => $id]);
+        $trick = $this->repository->findOneBy(['id' => $media->getTrick()]);
+        $allMedias =$this->getDoctrine()->getRepository(Media::class)->findBy(['trick' => $trick->getId()]);
+        $images = [];
+        $entityManager = $this->getDoctrine()->getManager();
+        if ($this->isCsrfTokenValid('delete' . $media->getId(), $request->request->get('_token'))) {
+            if (!empty($allMedias)) {
+                foreach ($allMedias as  $value) {
+                    if ($value->getType()=== "image") {
+                        array_push($images, $value);                    
+                    }
+                }
+                $topImage = $images[0];
+                $topImage->setOnTop(true);
+                $entityManager->persist($topImage);
+            } else {
+                $media = new Media;
+                $media->setFilename("http-wordpress-604950-1959020-cloudwaysapps-com-wp-content-uploads-2021-05-trucs-astuces-comment-rider-la-poudreuse-en-snowboard-ridestore-magazine-61ea6f3cd831f.jpg");
+                $media->setType("image");
+                $media->setUploadAt(new DateTime());
+                $media->setTrick($trick);
+                $media->setOnTop(true);
+                $entityManager->persist($media);
+            }
+            
+            $entityManager->remove($media);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'The picture has been deleted !');
+            return $this->redirectToRoute('app_home');
+        }
     }
 }
