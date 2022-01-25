@@ -304,6 +304,13 @@ section img {
   flex-wrap: wrap;
   justify-content: space-evenly;
 }
+
+.mediaContainerButton {
+  display: none;
+  background-color: red;
+  border-radius:.5rem;
+  padding:.5rem;
+}
 .mediaContainer > a {
     margin: 1rem;
 }
@@ -384,6 +391,21 @@ section#comments article .date {
 
 section#comments article a {
   grid-area: reply;
+}
+
+@media screen AND (max-width:1024px) {
+  .mediaContainer {
+    display: none;
+  }
+  .mediaContainer.visible {
+    display: flex;
+  }
+  .mediaContainerButton {
+    display: block;
+  }
+  .mediaContainerButton.hidden {
+    display: none;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
