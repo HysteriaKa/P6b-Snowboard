@@ -41,6 +41,7 @@
             {% endif %}
         </div>
 
+        <button class="mediaContainerButton" onclick="showHideMedias()">afficher les médias</button>
         <div class="mediaContainer mat-2">
             {% for media in medias %}
             <a href="{{ asset('/uploads/' ~ media.filename)}}" class="thumbnail">
@@ -118,6 +119,15 @@
                 document.querySelector("#comment_parentid").value = this.dataset.id;
             })
         })
+    }
+    function showHideMedias(){
+        const mediaContainerButton = document.querySelector(".mediaContainerButton");
+        const mediaContainer = document.querySelector(".mediaContainer");
+        mediaContainer.classList.toggle("visible");
+        mediaContainerButton.innerText = 
+            mediaContainer.classList.contains("visible")
+            ? "masquer les médias"
+            : "afficher les médias"; 
     }
 </script>
 {% endblock %}
