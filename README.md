@@ -2,6 +2,7 @@
 symfony 5
 Install composer if not already.
 install full symfony 5 : symfony new --full
+link bdd in .env
 run symfony server: start
 
 Codacy
