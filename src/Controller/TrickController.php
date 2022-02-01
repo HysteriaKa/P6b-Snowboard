@@ -85,10 +85,10 @@ class TrickController extends AbstractController
             $em = $this->getDoctrine()->getManager();
 
             $files = $form->get('media')->getData();
-
+            $onTop = $form->get('onTopPic')->getData();
             $trick->setCreatedAt(new \dateTime());
             if ($files) {
-                for ($i=0; $i <count($files) ; $i++) { 
+                for ($i = 0; $i < count($files); $i++) {
 
                     $newFile = new MediaUploader('uploads', $slugger, $files[$i]);
                     $solution = $newFile->add();
@@ -97,15 +97,30 @@ class TrickController extends AbstractController
                     $media->setType($solution[1]);
                     $media->setUploadAt(new DateTime());
                     $media->setTrick($trick);
-                    
+
                     $em->persist($media);
                 }
-            }
-             else {
+            } else {
                 $media = new Media;
                 $media->setFilename("https://ridestoremagazine.imgix.net/http%3A%2F%2Fwordpress-604950-1959020.cloudwaysapps.com%2Fwp-content%2Fuploads%2F2021%2F04%2Ftrick-tip-how-to-carve-on-a-snowboard-ridestore-magazine.jpg?ixlib=gatsbySourceUrl-1.6.9&auto=format%2Ccompress&crop=faces%2Centropy&fit=crop&w=689&h=689&s=868b5103de49cfc6e17654a07f04dd4e");
                 $media->setType("default");
-                
+            }
+            if ($onTop) {
+                $originalFilename = pathinfo($onTop->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $onTop->guessExtension();
+
+                try {
+                    $onTop->move(
+                        $this->getParameter('media_directory'),
+                        $newFilename
+                    );
+                    $em = $this->getDoctrine()->getManager();
+                    $trick->setOnTopPic($newFilename);
+                    $em->flush();
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Something went wrong');
+                }
             }
             $em->persist($trick);
             $em->flush();
@@ -148,14 +163,14 @@ class TrickController extends AbstractController
         $form = $this->createForm(EditTrickType::class, $trick);
         $form->handleRequest($request);
         $medias = $this->getDoctrine()->getRepository(Media::class)->findBy(['trick' => $trick->getId()]);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            
+
             $onTop = $form->get('OnTopPic')->getData();
             $files = $form->get('media')->getData();
             if ($files) {
-                foreach ($files as $key=>$file) {
+                foreach ($files as $key => $file) {
                     $newFile = new MediaUploader('uploads', $slugger, $file);
                     $solution = $newFile->add();
                     $media = new Media;
@@ -197,7 +212,24 @@ class TrickController extends AbstractController
             'medias' => $medias
         ]);
     }
+    /**
+     * @Route("/profil/deleteOnTopPicture/{id}", name="app_OnTopPic_delete")
+     */
+    public function deleteOnTopPicture(Request $request, int $id): Response
+    {
+        $trick = $this->repository->findOneBy(['id' => $id]);
+       
+        // dd($picOnTop = $trick->getOnTopPic());
+        // dd($picOnTop);
+        if ($this->isCsrfTokenValid('delete' . $trick->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $trick->setOnTopPic('defaultTrick.jpg');
+            $entityManager->flush();
 
+            $this->addFlash('success', 'The top picture has been deleted !, edit the trick to download a new one.');
+            return $this->redirectToRoute('app_home');
+        }
+    }
     /**
      * @route("/trick/{slug}", name="app_trick") 
      */
