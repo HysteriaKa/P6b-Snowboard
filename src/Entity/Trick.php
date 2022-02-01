@@ -69,6 +69,11 @@ class Trick
      */
     private $videoLink;
 
+    /**
+     * @ORM\Column(type="string", length=170, nullable=true)
+     */
+    private $onTopPic;
+
     public function __construct()
     {
         $this->media = new ArrayCollection();
@@ -220,6 +225,18 @@ class Trick
     public function setVideoLink(?string $videoLink): self
     {
         $this->videoLink = $videoLink;
+
+        return $this;
+    }
+
+    public function getOnTopPic(): ?string
+    {
+        return $this->onTopPic;
+    }
+
+    public function setOnTopPic(?string $onTopPic): self
+    {
+        $this->onTopPic = $onTopPic;
 
         return $this;
     }

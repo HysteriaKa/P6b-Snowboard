@@ -93,11 +93,6 @@ class TrickController extends AbstractController
                     $newFile = new MediaUploader('uploads', $slugger, $files[$i]);
                     $solution = $newFile->add();
                     $media = new Media;
-                    if ($solution[1]==='image'&& $i= 0) {
-                        $media->setOnTop(true);
-                    }else{
-                        $media->setOnTop(false);
-                    }
                     $media->setFilename($solution[0]);
                     $media->setType($solution[1]);
                     $media->setUploadAt(new DateTime());
@@ -110,7 +105,7 @@ class TrickController extends AbstractController
                 $media = new Media;
                 $media->setFilename("https://ridestoremagazine.imgix.net/http%3A%2F%2Fwordpress-604950-1959020.cloudwaysapps.com%2Fwp-content%2Fuploads%2F2021%2F04%2Ftrick-tip-how-to-carve-on-a-snowboard-ridestore-magazine.jpg?ixlib=gatsbySourceUrl-1.6.9&auto=format%2Ccompress&crop=faces%2Centropy&fit=crop&w=689&h=689&s=868b5103de49cfc6e17654a07f04dd4e");
                 $media->setType("default");
-                $media->setOnTop(true);
+                
             }
             $em->persist($trick);
             $em->flush();
@@ -153,9 +148,11 @@ class TrickController extends AbstractController
         $form = $this->createForm(EditTrickType::class, $trick);
         $form->handleRequest($request);
         $medias = $this->getDoctrine()->getRepository(Media::class)->findBy(['trick' => $trick->getId()]);
-        $newImages = [];
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            
+            $onTop = $form->get('OnTopPic')->getData();
             $files = $form->get('media')->getData();
             if ($files) {
                 foreach ($files as $key=>$file) {
@@ -165,9 +162,25 @@ class TrickController extends AbstractController
                     $media->setFilename($solution[0]);
                     $media->setType($solution[1]);
                     $media->setUploadAt(new DateTime());
-                    $media->setOnTop(false);
                     $media->setTrick($trick);
                     $em->persist($media);
+                }
+            }
+            if ($onTop) {
+                $originalFilename = pathinfo($onTop->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $onTop->guessExtension();
+
+                try {
+                    $onTop->move(
+                        $this->getParameter('media_directory'),
+                        $newFilename
+                    );
+                    $em = $this->getDoctrine()->getManager();
+                    $trick->setOnTopPic($newFilename);
+                    $em->flush();
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Something went wrong');
                 }
             }
 

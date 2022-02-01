@@ -27,7 +27,7 @@
             <hero {% if medias[0].type == "image" %}
                 style="background-image:url({{ asset('/uploads/' ~ medias[0].filename)}})" {% endif %}>
                 {% if app.user and app.user.isVerified %}
-                <a href="/profil/media/{{trick.id}}"><i class="fas fa-pencil-alt mar-2"></i></a>
+                <a href="/profil/edit/{{trick.id}}"><i class="fas fa-pencil-alt mar-2"></i></a>
 
                 <form method="post" action="{{ path('app_delete_top', {'id': medias[0].id}) }}"
                     onsubmit="return confirm('Are you sure you want to delete this amazing picture?');">
