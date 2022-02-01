@@ -42,14 +42,15 @@ class TrickFixtures extends Fixture
             $idCategory = rand(0,count($categoriesName)-1);
             $trick->setCategory($entitiesCategories[$idCategory]);
             $trick->setSlug($trickName);
+            $trick->setOnTopPic('defaultTrick.jpg');
             $trick->setVideoLink("https://www.youtube.com/embed/V9xuy-rVj9w");
-            foreach ($commentsContent as $content) {
-                $comment = new Comment();
-                $comment->setTrick($trick);
-                $comment->setContent($content);
-                $comment->setUser($user);
-                $manager->persist($comment);
-            }
+            // foreach ($commentsContent as $content) {
+            //     $comment = new Comment();
+            //     $comment->setTrick($trick);
+            //     $comment->setContent($content);
+            //     $comment->setUser($user);
+            //     $manager->persist($comment);
+            // }
 
             $manager->persist($trick);
         }
