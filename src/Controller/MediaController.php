@@ -62,7 +62,6 @@ class MediaController extends AbstractController
                 $media->setType("image");
                 $media->setUploadAt(new DateTime());
                 $media->setTrick($trick);
-                $media->setOnTop(true);
                 $entityManager->persist($media);
             }
 

@@ -38,10 +38,6 @@ class Media
      */
     private $trick;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $onTop;
 
     public function getId(): ?int
     {
@@ -96,15 +92,4 @@ class Media
         return $this;
     }
 
-    public function getOnTop(): ?bool
-    {
-        return $this->onTop;
-    }
-
-    public function setOnTop(bool $onTop): self
-    {
-        $this->onTop = $onTop;
-
-        return $this;
-    }
 }

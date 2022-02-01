@@ -105,6 +105,10 @@ footer {
   height: 60px;
 }
 
+.bold {
+  font-weight: bold;
+}
+
 #inputPassword,
 #inputEmail {
   padding: 1rem;
@@ -308,11 +312,11 @@ section img {
 .mediaContainerButton {
   display: none;
   background-color: red;
-  border-radius:.5rem;
-  padding:.5rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
 }
 .mediaContainer > a {
-    margin: 1rem;
+  margin: 1rem;
 }
 
 button {
@@ -393,7 +397,7 @@ section#comments article a {
   grid-area: reply;
 }
 
-@media screen AND (max-width:1024px) {
+@media screen AND (max-width: 1024px) {
   .mediaContainer {
     display: none;
   }
