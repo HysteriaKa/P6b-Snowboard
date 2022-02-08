@@ -73,7 +73,6 @@ It's all free if it can help anyone running this course.
 <!-- CONTACT -->
 ## Contact
 
-Karine - karine2310@gmail.com
 
 Project Link: [https://github.com/HysteriaKa/P6b-Snowboard.git](https://github.com/HysteriaKa/P6b-Snowboard.git)
 
