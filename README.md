@@ -61,11 +61,6 @@ This app is made to learn symfony and validate a part of the course.
 
 
 
-<!-- CONTRIBUTING -->
-## Contributing
-
-My mentor that helps me a lot !
-
 
 
 <!-- LICENSE -->
