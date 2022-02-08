@@ -42,9 +42,9 @@ You will have to run
 
 ### Installation
 
-You need to put the .env file in the main file. (livrables OC).
+You need to put the .env file in the main file. (deliverables OC).
 
-The database is also in the "livrables"
+The database is also in the deliverables.
 
 or you can use the fixture by running 
 
