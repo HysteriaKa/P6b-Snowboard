@@ -1,5 +1,6 @@
 # P6b-Snowboard
 ## ABOUT THE PROJECT
+[center]Texte centré[/center]
 symfony 5
 Install composer if not already.
 install full symfony 5 : symfony new --full
