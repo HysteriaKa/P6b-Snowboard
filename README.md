@@ -1,4 +1,3 @@
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
@@ -10,7 +9,7 @@ Registered users can add/modify and comment a trick.
 
 This app been developed with Symfony no external bundle allowed excepted for fixtures.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+
 
 
 
@@ -34,7 +33,7 @@ You have to clone this project
   git clone https://github.com/HysteriaKa/P6b-Snowboard.git
   ```
 
-TYou will have to run 
+You will have to run 
 * composer
   ```sh
   composer install
@@ -42,9 +41,9 @@ TYou will have to run
 
 ### Installation
 
-You need to put the .env file in the main file. (livrables OC).
+You need to put the .env file in the main file. (deliverables OC).
 
-The database is also in the "livrables"
+The database is also in the deliverables.
 
 or you can use the fixture by running 
 
@@ -61,11 +60,6 @@ This app is made to learn symfony and validate a part of the course.
 
 
 
-<!-- CONTRIBUTING -->
-## Contributing
-
-My mentor that helps me a lot !
-
 
 
 <!-- LICENSE -->
@@ -78,13 +72,8 @@ It's all free if it can help anyone running this course.
 <!-- CONTACT -->
 ## Contact
 
-Karine - karine2310@gmail.com
 
 Project Link: [https://github.com/HysteriaKa/P6b-Snowboard.git](https://github.com/HysteriaKa/P6b-Snowboard.git)
 
 Codacy
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/05f7c717966c4a2ca563a599001f454f)](https://www.codacy.com/gh/HysteriaKa/P6b-Snowboard/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HysteriaKa/P6b-Snowboard&amp;utm_campaign=Badge_Grade)
-
-
-
-
