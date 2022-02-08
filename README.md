@@ -10,7 +10,7 @@ Registered users can add/modify and comment a trick.
 
 This app been developed with Symfony no external bundle allowed excepted for fixtures.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+
 
 
 
