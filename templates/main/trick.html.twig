@@ -33,8 +33,7 @@
                {% endif %}
             </hero>
         </div>
-
-        <button class="mediaContainerButton" onclick="showHideMedias()">afficher les médias</button>
+        <button class="mediaContainerButton" onclick="showHideMedias()">see medias</button>
         <div class="mediaContainer mat-2">
             {% for media in medias %}
             <a href="{{ asset('/uploads/' ~ media.filename)}}" class="thumbnail">
@@ -119,8 +118,8 @@
         mediaContainer.classList.toggle("visible");
         mediaContainerButton.innerText = 
             mediaContainer.classList.contains("visible")
-            ? "masquer les médias"
-            : "afficher les médias"; 
+            ? "hide medias"
+            : "see medias"; 
     }
 </script>
 {% endblock %}
