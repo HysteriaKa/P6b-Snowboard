@@ -34,7 +34,7 @@ You have to clone this project
   git clone https://github.com/HysteriaKa/P6b-Snowboard.git
   ```
 
-TYou will have to run 
+You will have to run 
 * composer
   ```sh
   composer install
