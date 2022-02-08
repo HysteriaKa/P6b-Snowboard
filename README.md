@@ -1,6 +1,6 @@
 # P6b-Snowboard
 [CENTER]**ABOUT THE PROJECT**[/CENTER]
-symfony 5
+<p class="text-center">symfony 5</p>
 Install composer if not already.
 install full symfony 5 : symfony new --full
 link bdd in .env
