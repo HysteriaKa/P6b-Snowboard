@@ -31,7 +31,7 @@ You have to clone this project
 
 * git
   ```sh
-  https://github.com/HysteriaKa/P6b-Snowboard.git
+  git clone https://github.com/HysteriaKa/P6b-Snowboard.git
   ```
 
 TYou will have to run 
