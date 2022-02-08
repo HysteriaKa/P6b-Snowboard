@@ -47,7 +47,7 @@ class EditTrickType extends AbstractType
                     ])
                 ]
             ])
-            ->add("Save", SubmitType::class, ['attr' => ['class' => 'btn-dark mat-2']]);
+            ->add("Save", SubmitType::class, ['attr' => ['class' => 'btn-dark mat-2 mab-2']]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

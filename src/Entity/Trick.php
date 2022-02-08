@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
- * @UniqueEntity(fields={"name"}, message="There is already an a trcik with this name")
+ * @UniqueEntity(fields={"name"}, message="There is already a trick with this name")
  */
 class Trick
 {
